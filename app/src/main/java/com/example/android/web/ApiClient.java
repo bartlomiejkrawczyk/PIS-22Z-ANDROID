@@ -9,7 +9,7 @@ import retrofit2.http.Path;
 public interface ApiClient {
 
 	static ApiClient getInstance() {
-		return ApiClientBuilder.getInstance();
+		return new ApiClientBuilder().build();
 	}
 
 	@GET("ping/{name}")
