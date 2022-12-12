@@ -9,4 +9,7 @@
     <string name="hint_paragraph">Paragraph</string>
 	<string name="hint_paragraph_content">Content</string>
     <string name="hint_concept_summary">Summary</string>
+    <string name="sub_section">Pod Dział</string>
+	<string name="open">Otwórz</string>
+	<string name="section">Dział</string>
 </resources>
