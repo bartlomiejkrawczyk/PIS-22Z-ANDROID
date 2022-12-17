@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 public class TestsViewModel extends ViewModel {
 
-	private final MutableLiveData<String> mText;
+	private final MutableLiveData<String> text;
 
 	public TestsViewModel() {
-		mText = new MutableLiveData<>();
-		mText.setValue("This is tests fragment");
+		text = new MutableLiveData<>();
+		text.setValue("This is tests fragment");
 	}
 
 	public LiveData<String> getText() {
-		return mText;
+		return text;
 	}
 }

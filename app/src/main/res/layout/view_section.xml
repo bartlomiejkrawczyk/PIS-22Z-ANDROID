@@ -20,7 +20,7 @@
             android:id="@+id/section_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_acvite_background"
+            android:background="@drawable/section_background"
             android:dividerPadding="10dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="24dp"

@@ -1,13 +1,11 @@
 package com.example.android.ui;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.android.R;
 import com.example.android.databinding.ActivityMainMenuBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,7 +28,6 @@ public class MainMenuActivity extends AppCompatActivity {
 				R.id.navigation_menu, R.id.navigation_tests, R.id.navigation_add, R.id.navigation_settings)
 				.build();
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_menu);
-//		NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 		NavigationUI.setupWithNavController(binding.navView, navController);
 	}
 

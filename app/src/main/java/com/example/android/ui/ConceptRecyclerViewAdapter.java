@@ -14,16 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.android.R;
 import com.example.android.web.ApiClient;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
 import com.google.gson.Gson;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -140,7 +137,7 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 					@Override
 					public void onTextChanged(CharSequence s, int start, int before, int count) {
-						if(s.length() != 0){
+						if (s.length() != 0) {
 							paragraphEditable.setDescription(s.toString());
 						}
 					}
@@ -252,6 +249,7 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	public static class AddButtonViewHolder extends RecyclerView.ViewHolder {
 		public final Button buttonAddParagraph;
+		
 		public AddButtonViewHolder(@NonNull View itemView) {
 			super(itemView);
 
