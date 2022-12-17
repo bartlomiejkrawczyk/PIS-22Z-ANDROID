@@ -12,6 +12,7 @@
 		<!-- Status bar color. -->
 		<item name="android:statusBarColor">?attr/colorTertiary</item>
 		<!-- Customize your theme here. -->
+		<item name="android:fontFamily">sans-serif</item>
 	</style>
 
 	<style name="Theme.Android.button" parent="Theme.Android">
@@ -35,5 +36,14 @@
 		<item name="backgroundTint">@null</item>
 		<item name="icon">@drawable/ic_edit</item>
 		<item name="iconTint">@color/colorPrimary</item>
+	</style>
+
+	<style name="Theme.Android.editText" parent="Theme.Android">
+		<item name="android:layout_marginHorizontal" tools:targetApi="o">@dimen/activity_horizontal_margin</item>
+		<item name="android:layout_marginVertical" tools:targetApi="o">@dimen/activity_horizontal_margin</item>
+		<item name="android:background">@drawable/surface_background</item>
+		<item name="android:paddingHorizontal" tools:targetApi="o">@dimen/activity_horizontal_padding</item>
+		<item name="android:paddingVertical" tools:targetApi="o">@dimen/activity_vertical_padding</item>
+		<item name="android:elevation">@dimen/elevation</item>
 	</style>
 </resources>
