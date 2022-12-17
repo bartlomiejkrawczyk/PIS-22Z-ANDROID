@@ -2,11 +2,13 @@ package com.example.android.ui.menu;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -39,14 +41,21 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 		var section = sections.get(position);
 		var viewHolder = (SectionViewHolder) holder;
 
+		Log.d("onBindViewHolder", "Refreshed");
+		Log.d("TEST", section.toString());
+
 		viewHolder.sectionLinearLayout.setOnClickListener(v -> {
-			viewHolder.onClick();
+			section.setId(-section.getId());
 			notifyItemChanged(position);
+			Log.d("Test", "Item at position: " + position);
+			Log.d("Test", "State: " + section.getId());
+			Log.d("TEST", section.toString());
 		});
 
 		viewHolder.sectionName.setText(section.getName());
 
-		if (viewHolder.selected) {
+		if (section.getId() == 1 && !section.getSubSections().isEmpty()) {
+			viewHolder.subSections.setVisibility(View.VISIBLE);
 			viewHolder.sectionLinearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.section_acvite_background));
 			var subSections = section.getSubSections()
 					.stream()
@@ -55,7 +64,32 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, subSections);
 			viewHolder.subSections.setAdapter(arrayAdapter);
+
+			setListViewHeightBasedOnChildren(viewHolder.subSections);
+		} else {
+			viewHolder.sectionLinearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.section_background));
+			viewHolder.subSections.setAdapter(null);
+			viewHolder.subSections.setVisibility(View.GONE);
 		}
+	}
+
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			return;
+		}
+
+		int totalHeight = 0;
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(0, 0);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
 	}
 
 	@Override
@@ -70,8 +104,8 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 		notifyDataSetChanged();
 	}
 
+
 	static class SectionViewHolder extends RecyclerView.ViewHolder {
-		boolean selected;
 		TextView sectionName;
 		ListView subSections;
 		LinearLayout sectionLinearLayout;
@@ -81,11 +115,7 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 			this.sectionName = itemView.findViewById(R.id.section_name);
 			this.subSections = itemView.findViewById(R.id.sub_section_list_view);
 			this.sectionLinearLayout = itemView.findViewById(R.id.section_linear_layout);
-			this.selected = false;
-		}
-
-		void onClick() {
-			selected = !selected;
 		}
 	}
 }
+

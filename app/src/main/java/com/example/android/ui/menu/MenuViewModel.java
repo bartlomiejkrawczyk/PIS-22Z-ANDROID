@@ -27,14 +27,22 @@ public class MenuViewModel extends ViewModel {
 
 	public void populateList() {
 		var section1 = Section.builder()
+				.id(1)
 				.name("SIECI KOMPUTEROWE")
 				.build();
 
 		Section section2 = Section.builder()
+				.id(1)
 				.name("SYSTEMY OPERACYJNE")
-				.subSections(List.of(section1))
+				.subSections(List.of(section1, section1))
 				.build();
 
-		sections = List.of(section1, section1, section2);
+		var section3 = Section.builder()
+				.id(1)
+				.name("SIECI KOMPUTEROWE")
+				.subSections(List.of(section1, section2, section1))
+				.build();
+
+		sections = List.of(section1, section1, section2, section3);
 	}
 }
