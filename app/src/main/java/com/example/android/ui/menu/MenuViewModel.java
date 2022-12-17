@@ -1,10 +1,8 @@
 package com.example.android.ui.menu;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.Section;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuViewModel extends ViewModel {
@@ -15,7 +13,6 @@ public class MenuViewModel extends ViewModel {
 	public MenuViewModel() {
 		sectionsLiveData = new MutableLiveData<>();
 
-		// call your Rest API in init method
 		init();
 	}
 
@@ -29,21 +26,15 @@ public class MenuViewModel extends ViewModel {
 	}
 
 	public void populateList() {
-
-		Section section1 = Section.builder()
+		var section1 = Section.builder()
 				.name("SIECI KOMPUTEROWE")
 				.build();
 
-		List<Section> subSections = new ArrayList<>();
-		subSections.add(section1);
 		Section section2 = Section.builder()
 				.name("SYSTEMY OPERACYJNE")
-				.subSections(subSections)
+				.subSections(List.of(section1))
 				.build();
 
-		sections = new ArrayList<>();
-		sections.add(section1);
-		sections.add(section1);
-		sections.add(section2);
+		sections = List.of(section1, section1, section2);
 	}
 }

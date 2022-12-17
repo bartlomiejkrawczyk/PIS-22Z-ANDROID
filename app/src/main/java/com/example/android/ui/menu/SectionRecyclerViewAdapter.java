@@ -30,26 +30,30 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section, parent, false);
+		var rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_section, parent, false);
 		return new SectionViewHolder(rootView);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		Section section = sections.get(position);
-		SectionViewHolder viewHolder = (SectionViewHolder) holder;
+		var section = sections.get(position);
+		var viewHolder = (SectionViewHolder) holder;
+
 		viewHolder.sectionLinearLayout.setOnClickListener(v -> {
 			viewHolder.onClick();
 			notifyItemChanged(position);
 		});
 
 		viewHolder.sectionName.setText(section.getName());
+
 		if (viewHolder.selected) {
 			viewHolder.sectionLinearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.section_acvite_background));
-			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-					context,
-					android.R.layout.simple_list_item_1,
-					section.getSubSections().stream().map(Section::getName).collect(Collectors.toList()));
+			var subSections = section.getSubSections()
+					.stream()
+					.map(Section::getName)
+					.collect(Collectors.toList());
+
+			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, subSections);
 			viewHolder.subSections.setAdapter(arrayAdapter);
 		}
 	}
