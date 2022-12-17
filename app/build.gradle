@@ -43,6 +43,9 @@ android {
 			}
 		}
 	}
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -53,8 +56,12 @@ dependencies {
 	implementation 'com.squareup.okhttp3:okhttp:3.12.0'
 	implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 	implementation "com.squareup.retrofit2:converter-scalars:2.4.0"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
 
-	//noinspection AnnotationProcessorOnCompilePath
+    //noinspection AnnotationProcessorOnCompilePath
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
