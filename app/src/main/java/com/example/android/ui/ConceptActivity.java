@@ -2,15 +2,12 @@ package com.example.android.ui;
 
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.android.R;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
-
 import java.util.List;
 
 public class ConceptActivity extends AppCompatActivity {

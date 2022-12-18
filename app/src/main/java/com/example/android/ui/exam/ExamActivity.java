@@ -3,12 +3,16 @@ package com.example.android.ui.exam;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.android.R;
 import com.example.android.databinding.ActivityExamBinding;
+import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +28,9 @@ public class ExamActivity extends AppCompatActivity {
 	private TextView backTextView;
 	private TextView nextTextView;
 
+	private TextView questionTextView;
+	private ListView answerList;
+
 	private ExercisesViewModel exercisesViewModel;
 
 	@Override
@@ -37,6 +44,11 @@ public class ExamActivity extends AppCompatActivity {
 		this.examProgressTextView = binding.examQuestionTextView;
 		this.backTextView = binding.examBackTextView;
 		this.nextTextView = binding.examNextTextView;
+		this.questionTextView = binding.page.textViewQuestionCard;
+		this.answerList = binding.page.listViewQuestionCard;
+
+		binding.examProgressBar.setVisibility(View.GONE);
+		binding.page.imageViewQuestionCard.setImageDrawable(getDrawable(R.drawable.ic_settings));
 
 		this.exercisesViewModel = new ViewModelProvider(this)
 				.get(ExercisesViewModel.class);
@@ -57,17 +69,20 @@ public class ExamActivity extends AppCompatActivity {
 	}
 
 	private void setExercise(Exercise exercise) {
-		Log.i("TEST", exercise.getQuestion());
+		Choice choice = (Choice) exercise;
+		questionTextView.setText(exercise.getQuestion());
+		var arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, choice.getPossibleAnswers());
+		answerList.setAdapter(arrayAdapter);
 	}
 
 	@SuppressLint("DefaultLocale")
 	private void setCurrentQuestion(int currentQuestion) {
-		this.examProgressTextView.setText(String.format("%d/%d", currentQuestion, exercisesViewModel.getExercisesSize()));
+		this.examProgressTextView.setText(String.format("%d/%d", currentQuestion + 1, exercisesViewModel.getExercisesSize()));
 	}
 
 	@SuppressLint("DefaultLocale")
 	private void setExercises(List<Exercise> exercises) {
-		this.examProgressTextView.setText(String.format("%d/%d", exercisesViewModel.getCurrentExerciseNumberLiveData().getValue(), exercises.size()));
+		this.examProgressTextView.setText(String.format("%d/%d", exercisesViewModel.getCurrentExerciseNumber() + 1, exercises.size()));
 	}
 
 	private void setTimer(long examTime) {
@@ -75,7 +90,7 @@ public class ExamActivity extends AppCompatActivity {
 			@SuppressLint("SimpleDateFormat")
 			public void onTick(long millisUntilFinished) {
 				time.setText(new SimpleDateFormat("mm:ss").format(new Date(millisUntilFinished)));
-				timeProgressBar.setProgress((int) (millisUntilFinished * 100 / examTime), true);
+				timeProgressBar.setProgress((int) (millisUntilFinished * 100 / examTime), false);
 			}
 
 			@Override

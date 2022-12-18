@@ -16,7 +16,7 @@ public class ExercisesViewModel extends ViewModel {
 	private final MutableLiveData<Exercise> currentExerciseLiveData = new MutableLiveData<>();
 
 	public ExercisesViewModel() {
-		currentExerciseNumberLiveData.setValue(1);
+		currentExerciseNumberLiveData.setValue(0);
 		populateExercises();
 	}
 
@@ -36,21 +36,22 @@ public class ExercisesViewModel extends ViewModel {
 		return currentExerciseNumberLiveData;
 	}
 
-	private int currentExercise() {
-		return Optional.ofNullable(currentExerciseNumberLiveData.getValue()).orElse(1);
+	public int getCurrentExerciseNumber() {
+		return Optional.ofNullable(currentExerciseNumberLiveData.getValue())
+				.orElse(0);
 	}
 
 	public void nextExercise() {
-		int value = currentExercise() + 1;
-		if (value < getExercisesSize() + 1) {
+		int value = getCurrentExerciseNumber() + 1;
+		if (value < getExercisesSize()) {
 			currentExerciseNumberLiveData.setValue(value);
 			updateCurrentExercise();
 		}
 	}
 
 	public void previousExercise() {
-		int value = currentExercise() - 1;
-		if (value >= 1) {
+		int value = getCurrentExerciseNumber() - 1;
+		if (value >= 0) {
 			currentExerciseNumberLiveData.setValue(value);
 			updateCurrentExercise();
 		}
@@ -58,7 +59,7 @@ public class ExercisesViewModel extends ViewModel {
 
 	private void updateCurrentExercise() {
 		Optional.ofNullable(exercisesLiveData.getValue())
-				.map(exercises -> exercises.get(currentExercise() - 1))
+				.map(exercises -> exercises.get(getCurrentExerciseNumber()))
 				.ifPresent(currentExerciseLiveData::setValue);
 	}
 
