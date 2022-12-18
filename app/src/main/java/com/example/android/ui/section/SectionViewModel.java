@@ -1,5 +1,6 @@
 package com.example.android.ui.section;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.Section;
@@ -13,7 +14,7 @@ public class SectionViewModel extends ViewModel {
 		populateSection();
 	}
 
-	public MutableLiveData<Section> getSectionLiveData() {
+	public LiveData<Section> getSectionLiveData() {
 		return sectionLiveData;
 	}
 
