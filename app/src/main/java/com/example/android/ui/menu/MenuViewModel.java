@@ -19,49 +19,49 @@ public class MenuViewModel extends ViewModel {
 
 	public void populateSections() {
 		var section0 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Usługi sieciowe")
 				.build();
 
 		var section1 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Serwery DNS")
 				.build();
 
 		var section2 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Protokoły TCP i UDP")
 				.build();
 
 		var section3 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Sieci Komputerowe")
 				.subSections(List.of(section0, section1, section2))
 				.build();
 
 		var section4 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Aproksymacja")
 				.build();
 
 		var section5 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Metody Numeryczne")
 				.subSections(List.of(section4))
 				.build();
 
 		var section6 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Systemy Operacyjne")
 				.build();
 
 		var section7 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Bezpieczeństwo")
 				.build();
 
 		var section8 = Section.builder()
-				.id(1)
+				.id(-1)
 				.name("Bazy Danych")
 				.build();
 
