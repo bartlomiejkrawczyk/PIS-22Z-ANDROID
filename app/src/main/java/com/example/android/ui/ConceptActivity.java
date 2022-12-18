@@ -2,12 +2,15 @@ package com.example.android.ui;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.android.R;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
+
 import java.util.List;
 
 public class ConceptActivity extends AppCompatActivity {
@@ -41,12 +44,16 @@ public class ConceptActivity extends AppCompatActivity {
 
 	private void getConcept() {
 		var concept = Concept.builder()
-				.keyPhrase("Key Phrase")
-				.summary("Summary")
+				.keyPhrase("Sieć")
+				.summary("zbiór komputerów i innych urządzeń połączonych z sobą kanałami komunikacyjnymi oraz oprogramowanie wykorzystywane w tej sieci. Umożliwia ona wzajemne przekazywanie informacji oraz udostępnianie zasobów własnych między podłączonymi do niej urządzeniami, zwanymi punktami sieci.")
 				.paragraphs(List.of(
 						Paragraph.builder()
-								.header("Header")
-								.description("Description")
+								.header("Przeznaczenie")
+								.description("Głównym przeznaczeniem sieci komputerowej – ideą, dla której została stworzona – jest ułatwienie komunikacji między ludźmi (będącymi faktycznymi użytkownikami sieci). Sieć umożliwia łatwy i szybki dostęp do publikowanych danych, jak również otwiera techniczną możliwość tworzenia i korzystania ze wspólnych zasobów informacji i zasobów danych. W sensie prawnym, i w pewnym przybliżeniu, użytkownicy sieci komputerowej są również jej beneficjentami.")
+								.build(),
+						Paragraph.builder()
+								.header("Cechy użytkowe")
+								.description("ułatwienie komunikacji między ludźmi. Korzystając z sieci, ludzie mogą komunikować się szybko i łatwo przy wykorzystaniu odpowiednich programów komputerowych i oferowanych w danej sieci usług sieciowych. W odniesieniu do sieci Internet należy wyróżnić dwa rodzaje programów i skojarzone z nimi usługi")
 								.build()
 				))
 				.build();

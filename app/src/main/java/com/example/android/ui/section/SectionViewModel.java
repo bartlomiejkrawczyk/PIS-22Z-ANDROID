@@ -18,21 +18,25 @@ public class SectionViewModel extends ViewModel {
 	}
 
 	private void populateSection() {
-		var section1 = Section.builder()
+		var section0 = Section.builder()
 				.id(1)
-				.name("SIECI KOMPUTEROWE")
+				.name("Usługi sieciowe")
 				.build();
 
-		Section section2 = Section.builder()
+		var section1 = Section.builder()
 				.id(1)
-				.name("SYSTEMY OPERACYJNE")
-				.subSections(List.of(section1, section1))
+				.name("Serwery DNS")
+				.build();
+
+		var section2 = Section.builder()
+				.id(1)
+				.name("Protokoły TCP i UDP")
 				.build();
 
 		var section3 = Section.builder()
 				.id(1)
-				.name("SIECI KOMPUTEROWE")
-				.subSections(List.of(section1, section2, section1))
+				.name("Sieci Komputerowe")
+				.subSections(List.of(section0, section1, section2))
 				.build();
 
 		sectionLiveData.setValue(section3);

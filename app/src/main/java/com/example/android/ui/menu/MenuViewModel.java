@@ -18,23 +18,54 @@ public class MenuViewModel extends ViewModel {
 	}
 
 	public void populateSections() {
-		var section1 = Section.builder()
+		var section0 = Section.builder()
 				.id(1)
-				.name("SIECI KOMPUTEROWE")
+				.name("Usługi sieciowe")
 				.build();
 
-		Section section2 = Section.builder()
+		var section1 = Section.builder()
 				.id(1)
-				.name("SYSTEMY OPERACYJNE")
-				.subSections(List.of(section1, section1))
+				.name("Serwery DNS")
+				.build();
+
+		var section2 = Section.builder()
+				.id(1)
+				.name("Protokoły TCP i UDP")
 				.build();
 
 		var section3 = Section.builder()
 				.id(1)
-				.name("SIECI KOMPUTEROWE")
-				.subSections(List.of(section1, section2, section1))
+				.name("Sieci Komputerowe")
+				.subSections(List.of(section0, section1, section2))
 				.build();
 
-		sectionsLiveData.setValue(List.of(section1, section1, section2, section3));
+		var section4 = Section.builder()
+				.id(1)
+				.name("Aproksymacja")
+				.build();
+
+		var section5 = Section.builder()
+				.id(1)
+				.name("Metody Numeryczne")
+				.subSections(List.of(section4))
+				.build();
+
+		var section6 = Section.builder()
+				.id(1)
+				.name("Systemy Operacyjne")
+				.build();
+
+		var section7 = Section.builder()
+				.id(1)
+				.name("Bezpieczeństwo")
+				.build();
+
+		var section8 = Section.builder()
+				.id(1)
+				.name("Bazy Danych")
+				.build();
+
+
+		sectionsLiveData.setValue(List.of(section3, section5, section6, section7, section8));
 	}
 }

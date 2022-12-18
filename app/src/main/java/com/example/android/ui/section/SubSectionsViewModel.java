@@ -19,23 +19,21 @@ public class SubSectionsViewModel extends ViewModel {
 	}
 
 	private void populateSubSections() {
+		var section0 = Section.builder()
+				.id(1)
+				.name("Usługi sieciowe")
+				.build();
+
 		var section1 = Section.builder()
 				.id(1)
-				.name("SIECI KOMPUTEROWE")
+				.name("Serwery DNS")
 				.build();
 
-		Section section2 = Section.builder()
+		var section2 = Section.builder()
 				.id(1)
-				.name("SYSTEMY OPERACYJNE")
-				.subSections(List.of(section1, section1))
+				.name("Protokoły TCP i UDP")
 				.build();
 
-		var section3 = Section.builder()
-				.id(1)
-				.name("SIECI KOMPUTEROWE")
-				.subSections(List.of(section1, section2, section1))
-				.build();
-
-		subSectionsLiveData.setValue(List.of(section1, section1, section2, section3));
+		subSectionsLiveData.setValue(List.of(section0, section1, section2));
 	}
 }

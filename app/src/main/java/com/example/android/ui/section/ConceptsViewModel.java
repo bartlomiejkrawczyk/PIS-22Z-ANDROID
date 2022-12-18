@@ -21,11 +21,23 @@ public class ConceptsViewModel extends ViewModel {
 	}
 
 	private void populateConcepts() {
-		var concept = Concept.builder()
-				.keyPhrase("Key Phrase")
+		var concept1 = Concept.builder()
+				.keyPhrase("Sieć")
+				.summary("Summary")
+				.build();
+		var concept2 = Concept.builder()
+				.keyPhrase("Intersieć")
+				.summary("Summary")
+				.build();
+		var concept3 = Concept.builder()
+				.keyPhrase("Internet")
+				.summary("Summary")
+				.build();
+		var concept4 = Concept.builder()
+				.keyPhrase("Stos ISO/OSI")
 				.summary("Summary")
 				.build();
 		// TODO: Download concepts form api
-		conceptsLiveData.setValue(List.of(concept));
+		conceptsLiveData.setValue(List.of(concept1, concept2, concept3, concept4));
 	}
 }
