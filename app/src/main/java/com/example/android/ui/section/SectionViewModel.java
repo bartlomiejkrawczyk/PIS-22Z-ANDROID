@@ -1,23 +1,23 @@
-package com.example.android.ui.menu;
+package com.example.android.ui.section;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.Section;
 import java.util.List;
 
-public class MenuViewModel extends ViewModel {
+public class SectionViewModel extends ViewModel {
 
-	private final MutableLiveData<List<Section>> sectionsLiveData = new MutableLiveData<>();
+	private final MutableLiveData<Section> sectionLiveData = new MutableLiveData<>();
 
-	public MenuViewModel() {
-		populateSections();
+	public SectionViewModel() {
+		populateSection();
 	}
 
-	public MutableLiveData<List<Section>> getSectionsLiveData() {
-		return sectionsLiveData;
+	public MutableLiveData<Section> getSectionLiveData() {
+		return sectionLiveData;
 	}
 
-	public void populateSections() {
+	private void populateSection() {
 		var section1 = Section.builder()
 				.id(1)
 				.name("SIECI KOMPUTEROWE")
@@ -35,6 +35,6 @@ public class MenuViewModel extends ViewModel {
 				.subSections(List.of(section1, section2, section1))
 				.build();
 
-		sectionsLiveData.setValue(List.of(section1, section1, section2, section3));
+		sectionLiveData.setValue(section3);
 	}
 }

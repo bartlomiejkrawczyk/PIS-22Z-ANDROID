@@ -22,7 +22,7 @@
 			android:id="@+id/section_linear_layout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/section_background"
+			android:background="@drawable/secondary_background"
 			android:dividerPadding="10dp"
 			android:gravity="center_vertical"
 			android:paddingHorizontal="24dp"
@@ -49,7 +49,10 @@
 				android:id="@+id/section_icon"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				app:srcCompat="@drawable/ic_arrow_forward" />
+				app:srcCompat="@drawable/ic_arrow_forward"
+				android:background="?attr/selectableItemBackgroundBorderless"
+				android:clickable="true"
+				android:focusable="true" />
 		</LinearLayout>
 
 		<ListView

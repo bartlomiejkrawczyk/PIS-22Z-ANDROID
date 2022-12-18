@@ -1,26 +1,18 @@
 package com.example.android.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.R;
-import com.example.android.web.ApiClient;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
-import java.util.Comparator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.List;
 
 public class ConceptActivity extends AppCompatActivity {
 
-	private final ConceptRecyclerViewAdapter conceptRecyclerViewAdapter = new ConceptRecyclerViewAdapter(this.getApplicationContext());
+	private final ConceptRecyclerViewAdapter conceptRecyclerViewAdapter = new ConceptRecyclerViewAdapter(this);
 	private RecyclerView recyclerView;
 
 	@Override
@@ -48,27 +40,39 @@ public class ConceptActivity extends AppCompatActivity {
 	}
 
 	private void getConcept() {
-		var apiClient = ApiClient.getInstance();
-		var settings = getSharedPreferences("Android", Context.MODE_PRIVATE);
-		var call = apiClient.getConceptById(settings.getInt("concept", 7));
-		call.enqueue(new Callback<>() {
-			@SuppressLint("NotifyDataSetChanged")
-			@Override
-			public void onResponse(@NonNull Call<Concept> call, @NonNull Response<Concept> response) {
-				if (response.isSuccessful() && response.body() != null) {
-					var concept = response.body();
-					concept.getParagraphs().sort(Comparator.comparingInt(Paragraph::getSequentialNumber));
-					conceptRecyclerViewAdapter.setConcept(concept);
-					runOnUiThread(conceptRecyclerViewAdapter::notifyDataSetChanged);
-				} else {
-					Log.e("Concept", "Response concept failure");
-				}
-			}
+		var concept = Concept.builder()
+				.keyPhrase("Key Phrase")
+				.summary("Summary")
+				.paragraphs(List.of(
+						Paragraph.builder()
+								.header("Header")
+								.description("Description")
+								.build()
+				))
+				.build();
+		conceptRecyclerViewAdapter.setConcept(concept);
 
-			@Override
-			public void onFailure(@NonNull Call<Concept> call, @NonNull Throwable t) {
-				Log.e("Concept", "Load concept failure");
-			}
-		});
+//		var apiClient = ApiClient.getInstance();
+//		var settings = getSharedPreferences("Android", Context.MODE_PRIVATE);
+//		var call = apiClient.getConceptById(settings.getInt("concept", 7));
+//		call.enqueue(new Callback<>() {
+//			@SuppressLint("NotifyDataSetChanged")
+//			@Override
+//			public void onResponse(@NonNull Call<Concept> call, @NonNull Response<Concept> response) {
+//				if (response.isSuccessful() && response.body() != null) {
+//					var concept = response.body();
+//					concept.getParagraphs().sort(Comparator.comparingInt(Paragraph::getSequentialNumber));
+//					conceptRecyclerViewAdapter.setConcept(concept);
+//					runOnUiThread(conceptRecyclerViewAdapter::notifyDataSetChanged);
+//				} else {
+//					Log.e("Concept", "Response concept failure");
+//				}
+//			}
+//
+//			@Override
+//			public void onFailure(@NonNull Call<Concept> call, @NonNull Throwable t) {
+//				Log.e("Concept", "Load concept failure");
+//			}
+//		});
 	}
 }

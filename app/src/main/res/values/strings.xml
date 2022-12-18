@@ -31,4 +31,8 @@
 	<string name="login_failed">"Login failed"</string>
 	<string name="text_future_engineers">Future Engineers</string>
 	<string name="text_login">Zaloguj się</string>
+	<string name="text_section">Dział</string>
+	<string name="text_concepts">Pojęcia:</string>
+	<string name="text_sub_sections">Poddziały:</string>
+	<string name="text_check_your_knowledge">Sprawdź swoją wiedzę</string>
 </resources>
