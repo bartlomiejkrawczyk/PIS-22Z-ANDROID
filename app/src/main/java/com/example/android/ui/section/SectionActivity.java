@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.databinding.ActivitySectionBinding;
 import com.example.android.ui.ConceptActivity;
+import com.example.android.ui.exam.ExamActivity;
 import com.example.model.Concept;
 import com.example.model.Section;
 import java.util.List;
@@ -23,6 +25,8 @@ public class SectionActivity extends AppCompatActivity {
 	private TextView conceptTextView;
 	private ListView conceptListView;
 	private ListView subSectionsListView;
+	private Button testButton;
+	private Button examButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,8 @@ public class SectionActivity extends AppCompatActivity {
 		this.conceptTextView = binding.sectionTextView;
 		this.conceptListView = binding.conceptsView.conceptsListView;
 		this.subSectionsListView = binding.subSectionsView.subSectionsListView;
+		this.testButton = binding.sectionTestButton;
+		this.examButton = binding.sectionExamButton;
 
 		new ViewModelProvider(this)
 				.get(SectionViewModel.class)
@@ -48,6 +54,11 @@ public class SectionActivity extends AppCompatActivity {
 				.get(SubSectionsViewModel.class)
 				.getSubSectionsLiveData()
 				.observe(this, this::setSubSections);
+
+		testButton.setOnClickListener(v -> {
+			var intent = new Intent(this, ExamActivity.class);
+			startActivity(intent);
+		});
 	}
 
 	private void setSection(Section section) {

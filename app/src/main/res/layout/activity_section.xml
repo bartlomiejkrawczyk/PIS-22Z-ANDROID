@@ -60,10 +60,12 @@
 				android:layout_height="wrap_content">
 
 				<Button
+					android:id="@+id/section_test_button"
 					style="@style/Theme.Android.button"
 					android:text="Tryb Testowy" />
 
 				<Button
+					android:id="@+id/section_exam_button"
 					style="@style/Theme.Android.button"
 					android:text="Tryb Nauki" />
 			</LinearLayout>
