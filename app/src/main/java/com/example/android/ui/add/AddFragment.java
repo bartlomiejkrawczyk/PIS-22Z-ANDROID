@@ -14,6 +14,7 @@ public class AddFragment extends Fragment {
 
 	private FragmentAddBinding binding;
 
+	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		AddViewModel addViewModel =
 				new ViewModelProvider(this).get(AddViewModel.class);

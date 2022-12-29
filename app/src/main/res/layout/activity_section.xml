@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".ui.section.SectionActivity">
+
+	<EditText
+		android:id="@+id/section_edit_text"
+		style="@style/Theme.Android.editText.search"
+		app:layout_constraintTop_toTopOf="parent"
+		android:autofillHints=""
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent" />
+
+	<ScrollView
+		android:id="@+id/section_scroll_view"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		app:layout_constraintTop_toBottomOf="@id/section_edit_text"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/section_text_view"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/text_section"
+				android:contentDescription=""
+				android:textSize="30sp"
+				android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+				android:layout_marginVertical="@dimen/activity_vertical_margin" />
+
+			<include
+				android:id="@+id/concepts_view"
+				layout="@layout/view_concepts" />
+
+			<include
+				android:id="@+id/sub_sections_view"
+				layout="@layout/view_sub_sections" />
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/text_check_your_knowledge"
+				android:contentDescription=""
+				android:textSize="30sp"
+				android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+				android:layout_marginVertical="@dimen/activity_vertical_margin" />
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<Button
+					android:id="@+id/section_test_button"
+					style="@style/Theme.Android.button"
+					android:text="Tryb Testowy" />
+
+				<Button
+					android:id="@+id/section_exam_button"
+					style="@style/Theme.Android.button"
+					android:text="Tryb Nauki" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

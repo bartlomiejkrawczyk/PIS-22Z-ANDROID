@@ -14,6 +14,7 @@ public class TestsFragment extends Fragment {
 
 	private FragmentTestsBinding binding;
 
+	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		TestsViewModel testsViewModel =
 				new ViewModelProvider(this).get(TestsViewModel.class);

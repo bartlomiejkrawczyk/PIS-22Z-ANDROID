@@ -6,27 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.example.android.R;
 import com.example.android.databinding.FragmentMenuBinding;
-import com.example.model.Section;
-import java.util.List;
 
 public class MenuFragment extends Fragment {
 
 	private FragmentMenuBinding binding;
-	private SectionRecyclerViewAdapter recyclerViewAdapter;
 
-	Observer<List<Section>> sectionListUpdateObserver = new Observer<>() {
-		@Override
-		public void onChanged(List<Section> sections) {
-			recyclerViewAdapter.setSections(sections);
-		}
-	};
-
+	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		MenuViewModel menuViewModel =
 				new ViewModelProvider(this).get(MenuViewModel.class);
@@ -34,16 +22,19 @@ public class MenuFragment extends Fragment {
 		binding = FragmentMenuBinding.inflate(inflater, container, false);
 		View root = binding.getRoot();
 
-		RecyclerView recyclerView = root.findViewById(R.id.menu_recycler_view);
-		recyclerViewAdapter = new SectionRecyclerViewAdapter(this.getContext());
+		var recyclerView = binding.menuRecyclerView;
+		var recyclerViewAdapter = new SectionRecyclerViewAdapter(this.getContext());
 
 		recyclerView.setHasFixedSize(true);
 
-		RecyclerView.LayoutManager manager = new LinearLayoutManager(this.getContext());
+		var manager = new LinearLayoutManager(this.getContext());
 		recyclerView.setLayoutManager(manager);
 
 		recyclerView.setAdapter(recyclerViewAdapter);
-		menuViewModel.getSectionsLiveData().observe(getViewLifecycleOwner(), sectionListUpdateObserver);
+
+		menuViewModel.getSectionsLiveData()
+				.observe(getViewLifecycleOwner(), recyclerViewAdapter::setSections);
+
 		return root;
 	}
 
