@@ -3,7 +3,8 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	tools:context=".ui.exam.exercise.ExerciseFragment">
 
 	<androidx.cardview.widget.CardView
 		android:layout_width="match_parent"
@@ -54,28 +55,18 @@
 				android:id="@+id/text_view_question_card"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				tools:text="How are you?"
-				android:textAlignment="center"
-				android:gravity="center"
 				android:layout_margin="16dp"
+				android:layout_weight="1"
+				android:gravity="center"
+				android:textAlignment="center"
 				android:textSize="20sp"
-				android:layout_weight="1" />
+				tools:text="How are you?" />
 
-			<FrameLayout
+			<androidx.fragment.app.FragmentContainerView
+				android:id="@+id/fragment_container_exercise"
 				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_weight="5">
-
-				<ListView
-					android:id="@+id/list_view_question_card"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:dividerHeight="0dp"
-					android:divider="@null"
-					tools:listitem="@layout/view_item_choice_answer" />
-
-			</FrameLayout>
+				android:layout_height="wrap_content"
+				tools:layout="@layout/fragment_choice" />
 
 		</LinearLayout>
 	</androidx.cardview.widget.CardView>

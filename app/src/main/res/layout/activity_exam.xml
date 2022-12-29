@@ -44,14 +44,10 @@
 		android:layout_height="0dp"
 		android:layout_weight="25">
 
-		<include
-			android:id="@+id/page"
-			layout="@layout/view_pager_item_exercise_card" />
-
-		<!--		<androidx.viewpager.widget.ViewPager-->
-		<!--			android:id="@+id/exam_view_pager"-->
-		<!--			android:layout_width="match_parent"-->
-		<!--			android:layout_height="match_parent" />-->
+		<androidx.viewpager2.widget.ViewPager2
+			android:id="@+id/exam_view_pager"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
 
 		<ProgressBar
 			android:id="@+id/exam_progress_bar"
