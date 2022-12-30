@@ -19,17 +19,15 @@ import java.util.Optional;
 
 public class MultiChoiceArrayAdapter extends ArrayAdapter<ChoiceAnswer> {
 
-	private final MultipleChoice choice;
+	private final MultipleChoice exercise;
 	private final LifecycleOwner lifecycleOwner;
 	private final LiveData<State> stateLiveData;
-	private int numberOfAnswersLeft;
 
-	public MultiChoiceArrayAdapter(@NonNull Context context, MultipleChoice choice, LifecycleOwner lifecycleOwner, LiveData<State> stateLiveData) {
-		super(context, 0, choice.getAnswers());
-		this.choice = choice;
+	public MultiChoiceArrayAdapter(@NonNull Context context, MultipleChoice exercise, LifecycleOwner lifecycleOwner, LiveData<State> stateLiveData) {
+		super(context, 0, exercise.getAnswers());
+		this.exercise = exercise;
 		this.lifecycleOwner = lifecycleOwner;
 		this.stateLiveData = stateLiveData;
-		this.numberOfAnswersLeft = (int) choice.getAnswers().stream().filter(ChoiceAnswer::isCorrect).count();
 	}
 
 	@NonNull
@@ -38,17 +36,12 @@ public class MultiChoiceArrayAdapter extends ArrayAdapter<ChoiceAnswer> {
 		if (convertView == null) {
 			var binding = ViewItemChoiceAnswerBinding.inflate(LayoutInflater.from(getContext()), parent, false);
 			var checkbox = binding.checkboxAnswer;
-			var answer = choice.getAnswers().get(position);
+			var answer = exercise.getAnswers().get(position);
 			checkbox.setText(answer.getContent());
 			checkbox.setChecked(Optional.ofNullable(answer.getChecked()).orElse(false));
 			updateBasedOn(checkbox, position, stateLiveData.getValue());
 
 			checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-				if (isChecked) {
-					numberOfAnswersLeft--;
-				} else {
-					numberOfAnswersLeft++;
-				}
 				getItem(position).setChecked(isChecked);
 				updateAllBasedOn(parent, stateLiveData.getValue());
 			});
@@ -61,6 +54,12 @@ public class MultiChoiceArrayAdapter extends ArrayAdapter<ChoiceAnswer> {
 		}
 	}
 
+	private boolean alreadyFinished() {
+		var alreadyFinished = exercise.getAnswers().stream().filter(answer -> answer.getChecked() != null).count();
+		var correctCount = exercise.getAnswers().stream().filter(ChoiceAnswer::isCorrect).count();
+		return alreadyFinished == correctCount;
+	}
+
 	private void updateAllBasedOn(ViewGroup parent, State state) {
 		for (int i = 0; i < getCount(); i++) {
 			var checkbox = (CheckBox) parent.getChildAt(i).findViewById(R.id.checkbox_answer);
@@ -69,7 +68,7 @@ public class MultiChoiceArrayAdapter extends ArrayAdapter<ChoiceAnswer> {
 	}
 
 	private void updateBasedOn(CheckBox checkbox, int position, State state) {
-		if (state == State.STUDY_ANSWERS || (state == State.STUDY && numberOfAnswersLeft == 0)) {
+		if (state == State.STUDY_ANSWERS || (state == State.STUDY && alreadyFinished())) {
 			revealCheckbox(checkbox, position);
 		}
 	}
