@@ -3,8 +3,9 @@ package com.example.android.ui.exam;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
+import com.example.model.exam.MultipleChoice;
+import com.example.model.exam.answer.ChoiceAnswer;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,11 +76,21 @@ public class ExercisesViewModel extends ViewModel {
 
 	public void populateExercises(int sectionId) {
 		var result = IntStream.range(0, 100).boxed()
-				.map(i -> (Exercise) Choice.builder()
-						.question("Jaka jest twoja ulubiona litera?")
-						.correctAnswer("A")
-						.possibleAnswers(List.of("A", "B", "C"))
-						.build()
+				.map(i -> (Exercise)
+//						Choice.builder()
+//						.question("Jaka jest twoja ulubiona litera?")
+//						.correctAnswer("A")
+//						.possibleAnswers(List.of("A", "B", "C"))
+//						.build()
+								MultipleChoice.builder()
+										.question("Jakie są towoje ulubione litery?")
+										.answers(List.of(
+												ChoiceAnswer.builder().content("A").correct(true).build(),
+												ChoiceAnswer.builder().content("B").correct(false).build(),
+												ChoiceAnswer.builder().content("C").correct(true).build(),
+												ChoiceAnswer.builder().content("D").correct(false).build()
+										))
+										.build()
 				)
 				.collect(Collectors.toList());
 

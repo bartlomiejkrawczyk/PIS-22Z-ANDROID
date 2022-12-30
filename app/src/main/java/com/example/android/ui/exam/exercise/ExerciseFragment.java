@@ -17,7 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.android.R;
 import com.example.android.databinding.FragmentExerciseBinding;
 import com.example.android.ui.exam.ExercisesViewModel;
+import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
+import com.example.model.exam.MultipleChoice;
 
 public class ExerciseFragment extends Fragment {
 
@@ -52,11 +54,15 @@ public class ExerciseFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			position = getArguments().getInt(ARG_EXERCISE, 0);
-			fragment = ChoiceFragment.newInstance(position);
 		}
 		if (getActivity() != null) {
 			viewModel = new ViewModelProvider(getActivity()).get(ExercisesViewModel.class);
 			exercise = viewModel.getExerciseAtPosition(position);
+			if (exercise instanceof Choice) {
+				fragment = ChoiceFragment.newInstance(position);
+			} else if (exercise instanceof MultipleChoice) {
+				fragment = MultiChoiceFragment.newInstance(position);
+			}
 		}
 	}
 

@@ -9,28 +9,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.android.databinding.FragmentChoiceBinding;
+import com.example.android.databinding.FragmentMultiChoiceBinding;
 import com.example.android.ui.exam.ExercisesViewModel;
-import com.example.model.exam.Choice;
+import com.example.model.exam.MultipleChoice;
 
-public class ChoiceFragment extends Fragment {
+public class MultiChoiceFragment extends Fragment {
 
 	private static final String ARG_EXERCISE = "exercise";
+
 	private int position = 0;
-	private Choice choice;
+	private MultipleChoice choice;
 	private ExercisesViewModel viewModel;
 
-	private FragmentChoiceBinding binding;
+	private FragmentMultiChoiceBinding binding;
 
 	private ListView answerList;
 
-	public ChoiceFragment() {
+	public MultiChoiceFragment() {
 		// Required empty public constructor
 	}
 
-	public static ChoiceFragment newInstance(int position) {
-		var args = new Bundle();
-		var fragment = new ChoiceFragment();
+	public static MultiChoiceFragment newInstance(int position) {
+		MultiChoiceFragment fragment = new MultiChoiceFragment();
+		Bundle args = new Bundle();
 		args.putInt(ARG_EXERCISE, position);
 		fragment.setArguments(args);
 		return fragment;
@@ -44,13 +45,13 @@ public class ChoiceFragment extends Fragment {
 		}
 		if (getActivity() != null) {
 			viewModel = new ViewModelProvider(getActivity()).get(ExercisesViewModel.class);
-			choice = (Choice) viewModel.getExerciseAtPosition(position);
+			choice = (MultipleChoice) viewModel.getExerciseAtPosition(position);
 		}
 	}
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		binding = FragmentChoiceBinding.inflate(inflater, container, false);
+		binding = FragmentMultiChoiceBinding.inflate(inflater, container, false);
 		return binding.getRoot();
 	}
 
@@ -60,7 +61,7 @@ public class ChoiceFragment extends Fragment {
 		answerList = binding.listViewChoice;
 
 		if (getContext() != null) {
-			var arrayAdapter = new ChoiceArrayAdapter(getContext(), choice, getViewLifecycleOwner(), viewModel.getStateLiveData());
+			var arrayAdapter = new MultiChoiceArrayAdapter(getContext(), choice, getViewLifecycleOwner(), viewModel.getStateLiveData());
 			answerList.setAdapter(arrayAdapter);
 		}
 	}
