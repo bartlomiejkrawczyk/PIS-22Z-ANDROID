@@ -50,4 +50,7 @@
 	<string name="attachment_summary_off">Only download attachments when manually requested</string>
 	<string name="false_button">Fałsz</string>
 	<string name="truth_button">Prawda</string>
+	<string name="reveal">Odkryj</string>
+	<string name="hidden_text">********</string>
+	<string name="hide">Ukryj</string>
 </resources>
