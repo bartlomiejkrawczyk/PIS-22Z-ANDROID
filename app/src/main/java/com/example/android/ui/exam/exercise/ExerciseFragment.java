@@ -20,6 +20,7 @@ import com.example.android.ui.exam.ExercisesViewModel;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import com.example.model.exam.MultipleChoice;
+import com.example.model.exam.TruthOrFalse;
 
 public class ExerciseFragment extends Fragment {
 
@@ -62,6 +63,8 @@ public class ExerciseFragment extends Fragment {
 				fragment = ChoiceFragment.newInstance(position);
 			} else if (exercise instanceof MultipleChoice) {
 				fragment = MultiChoiceFragment.newInstance(position);
+			} else if (exercise instanceof TruthOrFalse) {
+				fragment = TruthOrFalseFragment.newInstance(position);
 			}
 		}
 	}
