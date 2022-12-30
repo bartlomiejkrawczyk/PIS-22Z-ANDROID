@@ -19,6 +19,7 @@ import com.example.android.databinding.FragmentExerciseBinding;
 import com.example.android.ui.exam.ExercisesViewModel;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
+import com.example.model.exam.FillBlanks;
 import com.example.model.exam.FlashCard;
 import com.example.model.exam.MultipleChoice;
 import com.example.model.exam.MultipleTruthOrFalse;
@@ -34,7 +35,8 @@ public class ExerciseFragment extends Fragment {
 			MultipleChoice.class, MultiChoiceFragment::newInstance,
 			TruthOrFalse.class, TruthOrFalseFragment::newInstance,
 			MultipleTruthOrFalse.class, MultiTruthOrFalseFragment::newInstance,
-			FlashCard.class, FlashCardFragment::newInstance
+			FlashCard.class, FlashCardFragment::newInstance,
+			FillBlanks.class, FillBlanksFragment::newInstance
 	);
 
 	private int position = 0;

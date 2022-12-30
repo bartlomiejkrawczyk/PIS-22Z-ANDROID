@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.android.R;
 import com.example.android.databinding.FragmentFlashCardBinding;
 import com.example.android.ui.exam.ExercisesViewModel;
+import com.example.android.ui.exam.State;
 import com.example.model.exam.FlashCard;
 
 public class FlashCardFragment extends Fragment {
@@ -69,6 +70,8 @@ public class FlashCardFragment extends Fragment {
 			updateView();
 		});
 
+		viewModel.getStateLiveData().observe(getViewLifecycleOwner(), this::updateBasedOn);
+
 		updateView();
 	}
 
@@ -87,5 +90,17 @@ public class FlashCardFragment extends Fragment {
 			textViewAnswer.setText(R.string.hidden_text);
 			buttonHideReveal.setText(R.string.reveal);
 		}
+	}
+
+	private void updateBasedOn(State state) {
+		if (state == State.STUDY_ANSWERS) {
+			revealAnswer();
+		}
+	}
+
+	private void revealAnswer() {
+		exercise.setShown(true);
+		updateView();
+		buttonHideReveal.setClickable(false);
 	}
 }

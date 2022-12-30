@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.exam.Exercise;
-import com.example.model.exam.FlashCard;
+import com.example.model.exam.FillBlanks;
+import com.example.model.exam.answer.BlankAnswer;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -102,9 +103,17 @@ public class ExercisesViewModel extends ViewModel {
 //												ChoiceAnswer.builder().content("Am I a stupid?").correct(false).build()
 //										))
 //										.build()
-								FlashCard.builder()
-										.question("Jaki skrót ma Transmission Control Protocol?")
-										.answer("TCP")
+//								FlashCard.builder()
+//										.question("Jaki skrót ma Transmission Control Protocol?")
+//										.answer("TCP")
+//										.build()
+								FillBlanks.builder()
+										.question("Uzupełnij luki:")
+										.answers(List.of(
+												BlankAnswer.builder().start("Wczorajsze poranne ").answer("śniadanie").end(" bardzo mi smakowało.").build(),
+												BlankAnswer.builder().start("Po południu jadłem bardzo dobry ").answer("obiad")
+														.end(", a wieczorem zjem kolację.").build()
+										))
 										.build()
 				)
 				.collect(Collectors.toList());
