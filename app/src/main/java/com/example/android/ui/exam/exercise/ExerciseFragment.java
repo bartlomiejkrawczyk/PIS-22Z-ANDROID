@@ -1,6 +1,7 @@
 package com.example.android.ui.exam.exercise;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.R;
 import com.example.android.databinding.FragmentExerciseBinding;
@@ -29,11 +30,9 @@ public class ExerciseFragment extends Fragment {
 
 	private TextView questionTextView;
 	private FrameLayout imageFrameLayout;
-	// TODO: Load images
 	private ProgressBar imageProgressBar;
 	private ImageView imageView;
 
-	private FragmentContainerView fragmentContainerView;
 	private Fragment fragment;
 
 	public ExerciseFragment() {
@@ -76,11 +75,8 @@ public class ExerciseFragment extends Fragment {
 		imageView = binding.imageViewQuestionCard;
 		imageProgressBar = binding.progressBarQuestionCard;
 
-		fragmentContainerView = binding.fragmentContainerExercise;
-
 		questionTextView.setText(exercise.getQuestion());
-		imageFrameLayout.setVisibility(View.GONE);
-		imageProgressBar.setVisibility(View.GONE);
+		setupImage();
 
 		getChildFragmentManager().beginTransaction()
 				.add(R.id.fragment_container_exercise, fragment)
@@ -91,5 +87,17 @@ public class ExerciseFragment extends Fragment {
 	public void onDestroyView() {
 		super.onDestroyView();
 		binding = null;
+	}
+
+	private void setupImage() {
+		var image = exercise.getContent();
+		if (image != null) {
+			// TODO: Load images
+			Log.i("IMG", "Loading image");
+			imageView.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_settings));
+		} else {
+			imageFrameLayout.setVisibility(View.GONE);
+			imageProgressBar.setVisibility(View.GONE);
+		}
 	}
 }
