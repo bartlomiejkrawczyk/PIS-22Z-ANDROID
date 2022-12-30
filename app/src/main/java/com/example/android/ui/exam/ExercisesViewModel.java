@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.exam.Exercise;
-import com.example.model.exam.FillBlanks;
-import com.example.model.exam.answer.BlankAnswer;
+import com.example.model.exam.SelectFromList;
+import com.example.model.exam.answer.ListAnswer;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -107,12 +107,21 @@ public class ExercisesViewModel extends ViewModel {
 //										.question("Jaki skrót ma Transmission Control Protocol?")
 //										.answer("TCP")
 //										.build()
-								FillBlanks.builder()
-										.question("Uzupełnij luki:")
+//								FillBlanks.builder()
+//										.question("Uzupełnij luki:")
+//										.answers(List.of(
+//												BlankAnswer.builder().start("Wczorajsze poranne ").answer("śniadanie").end(" bardzo mi smakowało.").build(),
+//												BlankAnswer.builder().start("Po południu jadłem bardzo dobry ").answer("obiad")
+//														.end(", a wieczorem zjem kolację.").build()
+//										))
+//										.build()
+								SelectFromList.builder()
+										.question("Wybierz z listy dostępnych wartości:")
 										.answers(List.of(
-												BlankAnswer.builder().start("Wczorajsze poranne ").answer("śniadanie").end(" bardzo mi smakowało.").build(),
-												BlankAnswer.builder().start("Po południu jadłem bardzo dobry ").answer("obiad")
-														.end(", a wieczorem zjem kolację.").build()
+												ListAnswer.builder().start("Wczorajsze poranne ").possibleAnswers(List.of("śniadanie", "obiad"))
+														.correctAnswer("śniadanie").end(" bardzo mi smakowało.").build(),
+												ListAnswer.builder().start("Po południu jadłem bardzo dobry ").possibleAnswers(List.of("śniadanie", "obiad"))
+														.correctAnswer("obiad").end(", a wieczorem zjem kolację.").build()
 										))
 										.build()
 				)

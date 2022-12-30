@@ -23,6 +23,7 @@ import com.example.model.exam.FillBlanks;
 import com.example.model.exam.FlashCard;
 import com.example.model.exam.MultipleChoice;
 import com.example.model.exam.MultipleTruthOrFalse;
+import com.example.model.exam.SelectFromList;
 import com.example.model.exam.TruthOrFalse;
 import java.util.Map;
 
@@ -36,7 +37,8 @@ public class ExerciseFragment extends Fragment {
 			TruthOrFalse.class, TruthOrFalseFragment::newInstance,
 			MultipleTruthOrFalse.class, MultiTruthOrFalseFragment::newInstance,
 			FlashCard.class, FlashCardFragment::newInstance,
-			FillBlanks.class, FillBlanksFragment::newInstance
+			FillBlanks.class, FillBlanksFragment::newInstance,
+			SelectFromList.class, SelectFromListFragment::newInstance
 	);
 
 	private int position = 0;
