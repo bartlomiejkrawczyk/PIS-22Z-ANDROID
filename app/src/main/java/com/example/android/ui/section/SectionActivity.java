@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.android.databinding.ActivitySectionBinding;
 import com.example.android.ui.ConceptActivity;
 import com.example.android.ui.exam.ExamActivity;
+import com.example.android.ui.exam.State;
 import com.example.model.Concept;
 import com.example.model.Section;
 import java.util.List;
@@ -57,6 +58,12 @@ public class SectionActivity extends AppCompatActivity {
 
 		testButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
+			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
+			startActivity(intent);
+		});
+		examButton.setOnClickListener(v -> {
+			var intent = new Intent(this, ExamActivity.class);
+			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
 			startActivity(intent);
 		});
 	}

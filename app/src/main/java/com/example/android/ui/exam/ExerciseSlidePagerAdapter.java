@@ -20,7 +20,7 @@ public class ExerciseSlidePagerAdapter extends FragmentStateAdapter {
 	@NonNull
 	@Override
 	public Fragment createFragment(int position) {
-		return new ExerciseFragment(exercises.get(position));
+		return ExerciseFragment.newInstance(position);
 	}
 
 	@Override

@@ -7,16 +7,17 @@ import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ExercisesViewModel extends ViewModel {
 
-	private final int sectionId = 1;
 	private final MutableLiveData<Integer> currentExerciseNumberLiveData = new MutableLiveData<>();
 	private final MutableLiveData<List<Exercise>> exercisesLiveData = new MutableLiveData<>();
+	private final MutableLiveData<State> stateLiveData = new MutableLiveData<>();
 
 	public ExercisesViewModel() {
 		currentExerciseNumberLiveData.setValue(0);
-		populateExercises();
 	}
 
 	public LiveData<List<Exercise>> getExercisesLiveData() {
@@ -29,6 +30,24 @@ public class ExercisesViewModel extends ViewModel {
 
 	public LiveData<Integer> getCurrentExerciseNumberLiveData() {
 		return currentExerciseNumberLiveData;
+	}
+
+	public LiveData<State> getStateLiveData() {
+		return stateLiveData;
+	}
+
+	public State getState() {
+		return stateLiveData.getValue();
+	}
+
+	public void setState(State state) {
+		stateLiveData.setValue(state);
+	}
+
+	public Exercise getExerciseAtPosition(int position) {
+		return Optional.ofNullable(exercisesLiveData.getValue())
+				.map(exercises -> exercises.get(position))
+				.orElse(null);
 	}
 
 	public int getCurrentExerciseNumber() {
@@ -54,19 +73,16 @@ public class ExercisesViewModel extends ViewModel {
 		currentExerciseNumberLiveData.setValue(position);
 	}
 
-	private void populateExercises() {
-		var exercise1 = Choice.builder()
-				.question("Jaka jest twoja ulubiona litera?")
-				.correctAnswer("A")
-				.possibleAnswers(List.of("A", "B", "C"))
-				.build();
+	public void populateExercises(int sectionId) {
+		var result = IntStream.range(0, 100).boxed()
+				.map(i -> (Exercise) Choice.builder()
+						.question("Jaka jest twoja ulubiona litera?")
+						.correctAnswer("A")
+						.possibleAnswers(List.of("A", "B", "C"))
+						.build()
+				)
+				.collect(Collectors.toList());
 
-		var exercise2 = Choice.builder()
-				.question("Jaki jest twój ulubiony kolor?")
-				.correctAnswer("czerwony")
-				.possibleAnswers(List.of("czerwony", "zielony", "niebieski", "różowy"))
-				.build();
-
-		exercisesLiveData.setValue(List.of(exercise1, exercise2));
+		exercisesLiveData.setValue(result);
 	}
 }

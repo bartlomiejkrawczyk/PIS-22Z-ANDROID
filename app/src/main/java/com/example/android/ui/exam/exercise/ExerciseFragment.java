@@ -12,14 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.lifecycle.ViewModelProvider;
 import com.example.android.R;
 import com.example.android.databinding.FragmentExerciseBinding;
-import com.example.model.exam.Choice;
+import com.example.android.ui.exam.ExercisesViewModel;
 import com.example.model.exam.Exercise;
 
 public class ExerciseFragment extends Fragment {
 
-	private final Exercise exercise;
+	private static final String ARG_EXERCISE = "exercise";
+	private int position = 0;
+	private Exercise exercise;
+	private ExercisesViewModel viewModel;
+
 	private FragmentExerciseBinding binding;
 
 	private TextView questionTextView;
@@ -31,15 +36,41 @@ public class ExerciseFragment extends Fragment {
 	private FragmentContainerView fragmentContainerView;
 	private Fragment fragment;
 
-	public ExerciseFragment(Exercise exercise) {
-		this.exercise = exercise;
+	public ExerciseFragment() {
+		// Required empty public constructor
+	}
+
+	public static ExerciseFragment newInstance(int position) {
+		var fragment = new ExerciseFragment();
+		var args = new Bundle();
+		args.putInt(ARG_EXERCISE, position);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			position = getArguments().getInt(ARG_EXERCISE, 0);
+			fragment = ChoiceFragment.newInstance(position);
+		}
+		if (getActivity() != null) {
+			viewModel = new ViewModelProvider(getActivity()).get(ExercisesViewModel.class);
+			exercise = viewModel.getExerciseAtPosition(position);
+		}
 	}
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		binding = FragmentExerciseBinding.inflate(inflater, container, false);
+		return binding.getRoot();
+	}
 
-		View root = binding.getRoot();
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
 		questionTextView = binding.textViewQuestionCard;
 		imageFrameLayout = binding.frameLayoutQuestionCard;
 		imageView = binding.imageViewQuestionCard;
@@ -51,13 +82,9 @@ public class ExerciseFragment extends Fragment {
 		imageFrameLayout.setVisibility(View.GONE);
 		imageProgressBar.setVisibility(View.GONE);
 
-		fragment = new ChoiceFragment((Choice) exercise);
-
 		getChildFragmentManager().beginTransaction()
 				.add(R.id.fragment_container_exercise, fragment)
 				.commit();
-
-		return root;
 	}
 
 	@Override
