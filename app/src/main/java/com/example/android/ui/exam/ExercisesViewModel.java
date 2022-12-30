@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.model.exam.Exercise;
-import com.example.model.exam.MultipleChoice;
+import com.example.model.exam.MultipleTruthOrFalse;
 import com.example.model.exam.answer.ChoiceAnswer;
 import java.util.List;
 import java.util.Optional;
@@ -82,13 +82,25 @@ public class ExercisesViewModel extends ViewModel {
 //						.correctAnswer("A")
 //						.possibleAnswers(List.of("A", "B", "C"))
 //						.build()
-								MultipleChoice.builder()
-										.question("Jakie są towoje ulubione litery?")
-										.answers(List.of(
-												ChoiceAnswer.builder().content("A").correct(true).build(),
-												ChoiceAnswer.builder().content("B").correct(false).build(),
-												ChoiceAnswer.builder().content("C").correct(true).build(),
-												ChoiceAnswer.builder().content("D").correct(false).build()
+//								MultipleChoice.builder()
+//										.question("Jakie są towoje ulubione litery?")
+//										.answers(List.of(
+//												ChoiceAnswer.builder().content("A").correct(true).build(),
+//												ChoiceAnswer.builder().content("B").correct(false).build(),
+//												ChoiceAnswer.builder().content("C").correct(true).build(),
+//												ChoiceAnswer.builder().content("D").correct(false).build()
+//										))
+//										.build()
+//								TruthOrFalse.builder()
+//										.question("Czy mój ulubiony kolor to zielony?")
+//										.correct(true)
+//										.build()
+								MultipleTruthOrFalse.builder()
+										.question("")
+										.tasks(List.of(
+												ChoiceAnswer.builder().content("Am I a god?").correct(true).build(),
+												ChoiceAnswer.builder().content("Am I a genius?").correct(true).build(),
+												ChoiceAnswer.builder().content("Am I a stupid?").correct(false).build()
 										))
 										.build()
 				)

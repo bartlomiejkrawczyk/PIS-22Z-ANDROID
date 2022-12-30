@@ -20,18 +20,27 @@ import com.example.android.ui.exam.ExercisesViewModel;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import com.example.model.exam.MultipleChoice;
+import com.example.model.exam.MultipleTruthOrFalse;
 import com.example.model.exam.TruthOrFalse;
+import java.util.Map;
 
 public class ExerciseFragment extends Fragment {
 
 	private static final String ARG_EXERCISE = "exercise";
+
+	private static final Map<Class<? extends Exercise>, FragmentSupplier> AVAILABLE_FRAGMENTS = Map.of(
+			Choice.class, ChoiceFragment::newInstance,
+			MultipleChoice.class, MultiChoiceFragment::newInstance,
+			TruthOrFalse.class, TruthOrFalseFragment::newInstance,
+			MultipleTruthOrFalse.class, MultiTruthOrFalseFragment::newInstance
+	);
+
 	private int position = 0;
 	private Exercise exercise;
 	private ExercisesViewModel viewModel;
 
 	private FragmentExerciseBinding binding;
 
-	private TextView questionTextView;
 	private FrameLayout imageFrameLayout;
 	private ProgressBar imageProgressBar;
 	private ImageView imageView;
@@ -58,14 +67,11 @@ public class ExerciseFragment extends Fragment {
 		}
 		if (getActivity() != null) {
 			viewModel = new ViewModelProvider(getActivity()).get(ExercisesViewModel.class);
-			exercise = viewModel.getExerciseAtPosition(position);
-			if (exercise instanceof Choice) {
-				fragment = ChoiceFragment.newInstance(position);
-			} else if (exercise instanceof MultipleChoice) {
-				fragment = MultiChoiceFragment.newInstance(position);
-			} else if (exercise instanceof TruthOrFalse) {
-				fragment = TruthOrFalseFragment.newInstance(position);
-			}
+		}
+		exercise = viewModel.getExerciseAtPosition(position);
+		var supplier = AVAILABLE_FRAGMENTS.get(exercise.getClass());
+		if (supplier != null) {
+			fragment = supplier.newInstance(position);
 		}
 	}
 
@@ -79,7 +85,7 @@ public class ExerciseFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		questionTextView = binding.textViewQuestionCard;
+		TextView questionTextView = binding.textViewQuestionCard;
 		imageFrameLayout = binding.frameLayoutQuestionCard;
 		imageView = binding.imageViewQuestionCard;
 		imageProgressBar = binding.progressBarQuestionCard;
