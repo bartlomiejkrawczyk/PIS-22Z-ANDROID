@@ -74,6 +74,13 @@ public class ExamActivity extends AppCompatActivity {
 
 		backTextView.setOnClickListener(v -> viewModel.previousExercise());
 		nextTextView.setOnClickListener(v -> viewModel.nextExercise());
+
+		viewModel.getStateLiveData().observe(this, state -> {
+			if (state == State.STUDY_ANSWERS) {
+				timer.cancel();
+				new SummaryListDialogFragment().show(getSupportFragmentManager(), "dialog");
+			}
+		});
 	}
 
 	@SuppressLint("DefaultLocale")
@@ -100,7 +107,9 @@ public class ExamActivity extends AppCompatActivity {
 
 			@Override
 			public void onFinish() {
-				viewModel.setState(State.STUDY_ANSWERS);
+				if (viewModel.getState() == State.EXAM) {
+					viewModel.setState(State.STUDY_ANSWERS);
+				}
 			}
 		};
 		timer.start();
