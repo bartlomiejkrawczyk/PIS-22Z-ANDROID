@@ -1,7 +1,7 @@
 package com.example.android;
 
 import android.app.Application;
-import com.example.android.ui.settings.SettingsUtility;
+import com.example.android.util.SettingsUtility;
 
 public class App extends Application {
 

@@ -7,6 +7,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import com.example.android.R;
 import com.example.android.ui.login.LoginActivity;
+import com.example.android.util.SettingsUtility;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

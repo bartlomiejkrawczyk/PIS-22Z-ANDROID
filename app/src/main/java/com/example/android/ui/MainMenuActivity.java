@@ -6,7 +6,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import com.example.android.R;
 import com.example.android.databinding.ActivityMainMenuBinding;
-import com.example.android.ui.settings.SettingsUtility;
+import com.example.android.util.SettingsUtility;
 
 public class MainMenuActivity extends AppCompatActivity {
 

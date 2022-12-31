@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.databinding.ActivityLoginBinding;
 import com.example.android.ui.MainMenuActivity;
-import com.example.android.ui.settings.SettingsUtility;
+import com.example.android.util.SettingsUtility;
 
 public class LoginActivity extends AppCompatActivity {
 
