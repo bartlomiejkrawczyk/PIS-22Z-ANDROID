@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.databinding.ActivityLoginBinding;
 import com.example.android.ui.MainMenuActivity;
+import com.example.android.util.SettingsUtility;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SettingsUtility.updateLanguage(this);
 
 		binding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());

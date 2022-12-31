@@ -1,39 +1,39 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<PreferenceCategory app:title="Konto">
+	<PreferenceCategory app:title="@string/settings_account">
 
 		<EditTextPreference
-			app:key="email"
-			app:title="Zmień e-mail"
 			app:defaultValue="admin@gmail.com"
+			app:key="@string/email_key"
+			app:title="@string/settings_email"
 			app:useSimpleSummaryProvider="true" />
 
 		<Preference
-			app:key="Password"
-			app:title="Zmień hasło" />
+			app:key="@string/password_key"
+			app:title="@string/settings_password" />
 
 		<Preference
-			app:key="logout"
-			app:title="Wyloguj" />
+			app:key="@string/logout_key"
+			app:title="@string/settings_logout" />
 
 	</PreferenceCategory>
 
-	<PreferenceCategory app:title="Preferencje">
+	<PreferenceCategory app:title="@string/settings_preferences">
 
 		<ListPreference
 			app:defaultValue="pl"
 			app:entries="@array/language_entries"
 			app:entryValues="@array/language_values"
-			app:key="language"
-			app:title="Wybierz język"
+			app:key="@string/language_key"
+			app:title="@string/settings_language"
 			app:useSimpleSummaryProvider="true" />
 
 		<ListPreference
-			app:defaultValue="system"
+			app:defaultValue="@string/system_key"
 			app:entries="@array/style_entries"
 			app:entryValues="@array/style_values"
-			app:key="style"
-			app:title="Wybierz styl aplikacji"
+			app:key="@string/settings_theme_key"
+			app:title="@string/settings_theme"
 			app:useSimpleSummaryProvider="true" />
 
 	</PreferenceCategory>

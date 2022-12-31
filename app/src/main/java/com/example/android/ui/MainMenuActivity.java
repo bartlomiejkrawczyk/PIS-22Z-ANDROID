@@ -6,12 +6,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import com.example.android.R;
 import com.example.android.databinding.ActivityMainMenuBinding;
+import com.example.android.util.SettingsUtility;
 
 public class MainMenuActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SettingsUtility.updateLanguage(this);
 
 		var binding = ActivityMainMenuBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());

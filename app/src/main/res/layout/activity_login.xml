@@ -19,7 +19,7 @@
 		android:breakStrategy="simple"
 		android:textSize="80sp"
 		android:textColor="@color/colorPrimary"
-		android:text="@string/text_future_engineers"
+		android:text="@string/app_name"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
