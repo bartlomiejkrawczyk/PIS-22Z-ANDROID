@@ -48,9 +48,6 @@ public class SettingsUtility {
 		var config = resources.getConfiguration();
 		config.setLocale(locale);
 		config.setLayoutDirection(locale);
-
-		context.getApplicationContext()
-				.getResources()
-				.updateConfiguration(config, displayMetrics);
+		resources.updateConfiguration(config, displayMetrics);
 	}
 }

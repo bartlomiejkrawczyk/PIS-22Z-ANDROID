@@ -49,6 +49,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		assert languagePreference != null;
 		languagePreference.setOnPreferenceChangeListener((preference, newValue) -> {
 			SettingsUtility.setLanguage(this.getContext(), (String) newValue);
+			var activity = getActivity();
+			if (activity == null) {
+				return false;
+			}
+			var intent = activity.getIntent();
+			activity.finish();
+			startActivity(intent);
 			return true;
 		});
 	}
