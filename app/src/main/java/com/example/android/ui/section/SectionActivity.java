@@ -27,7 +27,7 @@ public class SectionActivity extends AppCompatActivity {
 	private ListView conceptListView;
 	private ListView subSectionsListView;
 	private Button testButton;
-	private Button examButton;
+	private Button studyButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class SectionActivity extends AppCompatActivity {
 		this.conceptListView = binding.conceptsView.conceptsListView;
 		this.subSectionsListView = binding.subSectionsView.subSectionsListView;
 		this.testButton = binding.sectionTestButton;
-		this.examButton = binding.sectionExamButton;
+		this.studyButton = binding.sectionExamButton;
 
 		new ViewModelProvider(this)
 				.get(SectionViewModel.class)
@@ -58,12 +58,13 @@ public class SectionActivity extends AppCompatActivity {
 
 		testButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
-			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
+			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
 			startActivity(intent);
 		});
-		examButton.setOnClickListener(v -> {
+
+		studyButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
-			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
+			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
 			startActivity(intent);
 		});
 	}

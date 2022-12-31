@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.example.android.R;
 import com.example.android.databinding.ViewItemSummaryBinding;
 import com.example.model.exam.Exercise;
 import java.text.MessageFormat;
@@ -34,7 +35,7 @@ public class SummaryArrayAdapter extends ArrayAdapter<Exercise> {
 
 		var exercise = getItem(position);
 
-		textTask.setText(MessageFormat.format("Zadanie {0}.", position + 1));
+		textTask.setText(MessageFormat.format(getContext().getString(R.string.summary_task), position + 1));
 		textScore.setText(MessageFormat.format("{0} / {1}", exercise.getScore(), exercise.getPoints()));
 
 		return binding.getRoot();
