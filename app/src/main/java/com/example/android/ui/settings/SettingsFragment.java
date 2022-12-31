@@ -2,6 +2,8 @@ package com.example.android.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -11,14 +13,32 @@ import com.example.android.util.SettingsUtility;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+	private SettingsViewModel viewModel;
+
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.root_preferences, rootKey);
+		assert getActivity() != null;
+		viewModel = new ViewModelProvider(getActivity()).get(SettingsViewModel.class);
 
+		setupEmail();
 		setupLogout();
 		setupChangePassword();
 		setupLanguage();
 		setupTheme();
+	}
+
+	private void setupEmail() {
+		var emailPreference = (EditTextPreference) findPreference(getString(R.string.email_key));
+		assert emailPreference != null;
+		emailPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+			viewModel.setEmail((String) newValue, getContext());
+			return true;
+		});
+		if (getActivity() != null) {
+			viewModel.getEmailLiveData().observe(getActivity(), emailPreference::setText);
+		}
+		viewModel.loadEmail(getContext());
 	}
 
 	private void setupLogout() {
