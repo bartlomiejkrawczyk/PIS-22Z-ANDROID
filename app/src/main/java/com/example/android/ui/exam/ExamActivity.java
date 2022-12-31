@@ -4,15 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.android.R;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import com.example.android.databinding.ActivityExamBinding;
-import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,83 +18,97 @@ import java.util.List;
 
 public class ExamActivity extends AppCompatActivity {
 
-	private ActivityExamBinding binding;
+	public static final String ARG_MODE = "mode";
+	private static final int EXAM_TIME = 60_000;
 
 	private ProgressBar timeProgressBar;
 	private TextView time;
 	private TextView examProgressTextView;
+	private ProgressBar examProgressBar;
 	private TextView backTextView;
 	private TextView nextTextView;
+	private ViewPager2 viewPager;
 
-	private TextView questionTextView;
-	private ListView answerList;
+	private CountDownTimer timer;
 
-	private ExercisesViewModel exercisesViewModel;
+	private ExercisesViewModel viewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.binding = ActivityExamBinding.inflate(getLayoutInflater());
+		var binding = ActivityExamBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
 		this.timeProgressBar = binding.examTimeProgressBar;
 		this.time = binding.examTimeTextView;
 		this.examProgressTextView = binding.examQuestionTextView;
+		this.examProgressBar = binding.examProgressBar;
 		this.backTextView = binding.examBackTextView;
 		this.nextTextView = binding.examNextTextView;
-		this.questionTextView = binding.page.textViewQuestionCard;
-		this.answerList = binding.page.listViewQuestionCard;
+		this.viewPager = binding.examViewPager;
 
-		binding.examProgressBar.setVisibility(View.GONE);
-		binding.page.imageViewQuestionCard.setImageDrawable(getDrawable(R.drawable.ic_settings));
-
-		this.exercisesViewModel = new ViewModelProvider(this)
-				.get(ExercisesViewModel.class);
-
-		exercisesViewModel.getCurrentExerciseLiveData()
-				.observe(this, this::setExercise);
-
-		exercisesViewModel.getExercisesLiveData()
-				.observe(this, this::setExercises);
-
-		exercisesViewModel.getCurrentExerciseNumberLiveData()
-				.observe(this, this::setCurrentQuestion);
-
-		backTextView.setOnClickListener(v -> exercisesViewModel.previousExercise());
-		nextTextView.setOnClickListener(v -> exercisesViewModel.nextExercise());
-
-		setTimer(2 * 60_000L);
+		setupViewPager();
+		registerViewModel();
+		setTimer();
+		setStateBasedOnIntent();
 	}
 
-	private void setExercise(Exercise exercise) {
-		Choice choice = (Choice) exercise;
-		questionTextView.setText(exercise.getQuestion());
-		var arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, choice.getPossibleAnswers());
-		answerList.setAdapter(arrayAdapter);
+	private void setupViewPager() {
+		viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+			@Override
+			public void onPageSelected(int position) {
+				viewModel.setExerciseNumber(position);
+			}
+		});
+
+		this.viewPager.setPageTransformer(new ZoomOutPageTransformer());
+	}
+
+	private void registerViewModel() {
+		this.viewModel = new ViewModelProvider(this).get(ExercisesViewModel.class);
+
+		viewModel.getExercisesLiveData().observe(this, this::setExercises);
+		viewModel.getCurrentExerciseNumberLiveData().observe(this, this::setCurrentQuestion);
+
+		viewModel.populateExercises(0);
+
+		backTextView.setOnClickListener(v -> viewModel.previousExercise());
+		nextTextView.setOnClickListener(v -> viewModel.nextExercise());
 	}
 
 	@SuppressLint("DefaultLocale")
 	private void setCurrentQuestion(int currentQuestion) {
-		this.examProgressTextView.setText(String.format("%d/%d", currentQuestion + 1, exercisesViewModel.getExercisesSize()));
+		examProgressTextView.setText(String.format("%d/%d", currentQuestion + 1, viewModel.getExercisesSize()));
+		viewPager.setCurrentItem(currentQuestion);
 	}
 
 	@SuppressLint("DefaultLocale")
 	private void setExercises(List<Exercise> exercises) {
-		this.examProgressTextView.setText(String.format("%d/%d", exercisesViewModel.getCurrentExerciseNumber() + 1, exercises.size()));
+		examProgressTextView.setText(String.format("%d/%d", viewModel.getCurrentExerciseNumber() + 1, exercises.size()));
+		FragmentStateAdapter pagerAdapter = new ExerciseSlidePagerAdapter(this, exercises);
+		viewPager.setAdapter(pagerAdapter);
+		examProgressBar.setVisibility(View.GONE);
 	}
 
-	private void setTimer(long examTime) {
-		new CountDownTimer(examTime, 1000) {
+	private void setTimer() {
+		timer = new CountDownTimer(EXAM_TIME, 1000) {
 			@SuppressLint("SimpleDateFormat")
 			public void onTick(long millisUntilFinished) {
 				time.setText(new SimpleDateFormat("mm:ss").format(new Date(millisUntilFinished)));
-				timeProgressBar.setProgress((int) (millisUntilFinished * 100 / examTime), false);
+				timeProgressBar.setProgress((int) (millisUntilFinished * 100 / EXAM_TIME), false);
 			}
 
 			@Override
 			public void onFinish() {
-				// Ignore
+				viewModel.setState(State.STUDY_ANSWERS);
 			}
-		}.start();
+		};
+		timer.start();
+	}
+
+	private void setStateBasedOnIntent() {
+		var intent = getIntent();
+		var mode = intent.getIntExtra(ARG_MODE, 0);
+		viewModel.setState(mode == State.EXAM.getValue() ? State.EXAM : State.STUDY);
 	}
 }

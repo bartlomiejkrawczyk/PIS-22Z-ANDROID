@@ -48,4 +48,10 @@
 	<string name="attachment_title">Download incoming attachments</string>
 	<string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
 	<string name="attachment_summary_off">Only download attachments when manually requested</string>
+	<string name="false_button">Fałsz</string>
+	<string name="truth_button">Prawda</string>
+	<string name="reveal">Odkryj</string>
+	<string name="hidden_text">********</string>
+	<string name="hide">Ukryj</string>
+	<string name="spinner_content_description">Spinner drop down arrow</string>
 </resources>
