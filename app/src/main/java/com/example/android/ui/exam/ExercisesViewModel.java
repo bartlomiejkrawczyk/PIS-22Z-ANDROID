@@ -66,6 +66,8 @@ public class ExercisesViewModel extends ViewModel {
 		int value = getCurrentExerciseNumber() + 1;
 		if (value < getExercisesSize()) {
 			currentExerciseNumberLiveData.setValue(value);
+		} else {
+			stateLiveData.setValue(State.STUDY_ANSWERS);
 		}
 	}
 

@@ -11,4 +11,6 @@
 	<dimen name="activity_horizontal_padding">16dp</dimen>
 	<dimen name="activity_vertical_padding">16dp</dimen>
 	<dimen name="elevation">4dp</dimen>
+	<dimen name="list_item_spacing">16dp</dimen>
+	<dimen name="list_item_spacing_half">8dp</dimen>
 </resources>
