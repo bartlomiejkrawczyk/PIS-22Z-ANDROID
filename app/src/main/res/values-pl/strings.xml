@@ -47,4 +47,8 @@
 	<string name="text_exam_mode">Tryb Testowy</string>
 	<string name="text_study_mode">Tryb Nauki</string>
 	<string name="summary_task">Zadanie {0}.</string>
+	<string name="text_register">Zarejestruj się</string>
+	<string name="hint_username">Login</string>
+	<string name="button_register">Zarejestruj się</string>
+	<string name="hint_repeat_password">Powtórz hasło</string>
 </resources>

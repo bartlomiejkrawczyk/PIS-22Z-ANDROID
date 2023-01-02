@@ -59,4 +59,8 @@
 	<string name="text_exam_mode">Exam Mode</string>
 	<string name="text_study_mode">Study Mode</string>
 	<string name="summary_task">Task {0}.</string>
+	<string name="text_register">Register</string>
+	<string name="hint_username">Username</string>
+	<string name="button_register">Register</string>
+	<string name="hint_repeat_password">Repeat Password</string>
 </resources>
