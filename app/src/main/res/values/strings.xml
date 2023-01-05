@@ -66,4 +66,12 @@
 	<string name="hint_start_paragraph">Start Paragraph</string>
 	<string name="hint_possible_answers">Comma-separated possible answers</string>
 	<string name="hint_continue_paragraph">Continue Paragraph</string>
+	<string name="button_done">Done</string>
+	<string name="fill_blanks">Fill blanks</string>
+	<string name="select_from_list">Select from list</string>
+	<string name="single_choice">Single choice</string>
+	<string name="multiple_choice">Multiple choice</string>
+	<string name="flash_card">Flash card</string>
+	<string name="truth_or_false">Truth or False</string>
+	<string name="multiple_truth_or_false">Multiple Truth or False</string>
 </resources>
