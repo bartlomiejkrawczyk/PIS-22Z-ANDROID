@@ -59,4 +59,11 @@
 	<string name="text_exam_mode">Exam Mode</string>
 	<string name="text_study_mode">Study Mode</string>
 	<string name="summary_task">Task {0}.</string>
+	<string name="hint_question">Question</string>
+	<string name="hint_answer">Answer</string>
+	<string name="button_add">Add</string>
+	<string name="hint_correct_answer">Correct Answer</string>
+	<string name="hint_start_paragraph">Start Paragraph</string>
+	<string name="hint_possible_answers">Comma-separated possible answers</string>
+	<string name="hint_continue_paragraph">Continue Paragraph</string>
 </resources>
