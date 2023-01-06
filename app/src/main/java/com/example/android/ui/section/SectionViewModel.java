@@ -23,6 +23,10 @@ public class SectionViewModel extends ViewModel {
 		return sectionLiveData.getValue();
 	}
 
+	public void populateNullSection() {
+		sectionLiveData.setValue(new Section());
+	}
+
 	public void populateSection(int sectionId) {
 		var apiClient = ApiClient.getInstance();
 		var call = apiClient.getSectionById(sectionId);

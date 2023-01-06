@@ -37,12 +37,12 @@ public interface ApiClient {
 	Call<List<Section>> getSectionsByParentId(@Path(value = "sectionId") int sectionId);
 
 	@GET("section/")
-	Call<List<Section>> getRootSections();
+	Call<List<Section>> getRootSections(); // Where parent section id is null
 
 	@POST("section/{sectionId}")
 	Call<Section> saveSection(@Path(value = "sectionId") Integer sectionId, @Body Section section);
 
-	@DELETE("section/{sectionId")
+	@DELETE("section/{sectionId}")
 	Call<Void> deleteSection(@Path(value = "sectionId") int sectionId);
 
 	@GET("section/id/{sectionId}")
