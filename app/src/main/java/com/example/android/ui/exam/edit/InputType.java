@@ -13,7 +13,8 @@ import java.util.List;
 public enum InputType {
 
 	SIMPLE(List.of(FlashCard.class)),
-	CHOICE(List.of(Choice.class, MultipleChoice.class, TruthOrFalse.class, MultipleTruthOrFalse.class)),
+	TRUTH_OR_FALSE(List.of(TruthOrFalse.class)),
+	CHOICE(List.of(Choice.class, MultipleChoice.class, MultipleTruthOrFalse.class)),
 	PARAGRAPH(List.of(FillBlanks.class, SelectFromList.class));
 
 	private final List<Class<? extends Exercise>> classes;

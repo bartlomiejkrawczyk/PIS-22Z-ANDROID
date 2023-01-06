@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,10 +22,15 @@ import com.example.model.exam.MultipleChoice;
 import com.example.model.exam.MultipleTruthOrFalse;
 import com.example.model.exam.SelectFromList;
 import com.example.model.exam.TruthOrFalse;
+import com.example.model.exam.answer.BlankAnswer;
+import com.example.model.exam.answer.ChoiceAnswer;
+import com.example.model.exam.answer.ListAnswer;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
@@ -40,10 +46,20 @@ public class EditExerciseActivity extends AppCompatActivity {
 
 	private final Map<InputType, Runnable> spinnerHandler = Map.of(
 			InputType.SIMPLE, this::initFlashCard,
+			InputType.TRUTH_OR_FALSE, this::initTruthOrFalse,
 			InputType.CHOICE, this::initChoiceAnswer,
 			InputType.PARAGRAPH, this::initParagraphAnswer
 	);
 
+	private final Map<Class<? extends Exercise>, Function<String, Exercise>> exerciseMappers = Map.of(
+			FlashCard.class, this::toFlashCard,
+			FillBlanks.class, this::toFillBlanks,
+			SelectFromList.class, this::toSelectFromList,
+			Choice.class, this::toChoice,
+			MultipleChoice.class, this::toMultipleChoice,
+			MultipleTruthOrFalse.class, this::toMultipleTruthOrFalse,
+			TruthOrFalse.class, this::toTruthOrFalse
+	);
 
 	private Spinner spinnerExerciseType;
 	private EditText editTextQuestion;
@@ -52,6 +68,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 	private Button buttonDone;
 
 	private EditText editTextFlashCard;
+	private CheckBox checkBoxTruthOrFalse;
 	private ListView listViewAnswers;
 
 	private ChoiceAnswerArrayAdapter choiceAdapter;
@@ -68,6 +85,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 		this.buttonAdd = binding.buttonAdd;
 		this.buttonDone = binding.buttonDone;
 		this.editTextFlashCard = binding.editTextFlashCard;
+		this.checkBoxTruthOrFalse = binding.checkboxTruthOrFalse;
 		this.listViewAnswers = binding.listViewAnswers;
 
 		setupSpinner();
@@ -99,12 +117,21 @@ public class EditExerciseActivity extends AppCompatActivity {
 
 	private void initFlashCard() {
 		editTextFlashCard.setVisibility(View.VISIBLE);
+		checkBoxTruthOrFalse.setVisibility(View.GONE);
+		listViewAnswers.setVisibility(View.GONE);
+		buttonAdd.setVisibility(View.GONE);
+	}
+
+	private void initTruthOrFalse() {
+		editTextFlashCard.setVisibility(View.GONE);
+		checkBoxTruthOrFalse.setVisibility(View.VISIBLE);
 		listViewAnswers.setVisibility(View.GONE);
 		buttonAdd.setVisibility(View.GONE);
 	}
 
 	private void initChoiceAnswer() {
 		editTextFlashCard.setVisibility(View.GONE);
+		checkBoxTruthOrFalse.setVisibility(View.GONE);
 		listViewAnswers.setVisibility(View.VISIBLE);
 		buttonAdd.setVisibility(View.VISIBLE);
 
@@ -118,6 +145,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
 	private void initParagraphAnswer() {
 		editTextFlashCard.setVisibility(View.GONE);
+		checkBoxTruthOrFalse.setVisibility(View.GONE);
 		listViewAnswers.setVisibility(View.VISIBLE);
 		buttonAdd.setVisibility(View.VISIBLE);
 
@@ -129,31 +157,6 @@ public class EditExerciseActivity extends AppCompatActivity {
 		buttonAdd.setOnClickListener(v -> paragraphAdapter.add(new ParagraphAnswer()));
 	}
 
-	private final Map<Class<? extends Exercise>, Function<String, Exercise>> exerciseMappers = Map.of(
-			FlashCard.class, question -> {
-				var answer = editTextFlashCard.getText().toString();
-				return FlashCard.builder().question(question).answer(answer).build();
-			},
-			FillBlanks.class, question -> {
-				return FillBlanks.builder().question(question).build();
-			},
-			SelectFromList.class, question -> {
-				return SelectFromList.builder().question(question).build();
-			},
-			Choice.class, question -> {
-				return Choice.builder().question(question).build();
-			},
-			MultipleChoice.class, question -> {
-				return MultipleChoice.builder().question(question).build();
-			},
-			TruthOrFalse.class, question -> {
-				return TruthOrFalse.builder().question(question).build();
-			},
-			MultipleTruthOrFalse.class, question -> {
-				return MultipleTruthOrFalse.builder().question(question).build();
-			}
-	);
-
 	private void setupDoneButton() {
 		buttonDone.setOnClickListener(v -> {
 			var chosen = exercises.get((String) spinnerExerciseType.getSelectedItem());
@@ -163,5 +166,84 @@ public class EditExerciseActivity extends AppCompatActivity {
 				var exercise = mapper.apply(question);
 			}
 		});
+	}
+
+	private FlashCard toFlashCard(String question) {
+		var answer = editTextFlashCard.getText().toString();
+		return FlashCard.builder().question(question).answer(answer).build();
+	}
+
+	private FillBlanks toFillBlanks(String question) {
+		var answers = paragraphAdapter.getParagraphAnswers()
+				.stream()
+				.map(paragraph ->
+						BlankAnswer.builder()
+								.start(paragraph.getStart())
+								.answer(paragraph.getAnswer())
+								.end(paragraph.getEnd())
+								.build()
+				)
+				.collect(Collectors.toList());
+		return FillBlanks.builder().question(question).answers(answers).build();
+	}
+
+	private SelectFromList toSelectFromList(String question) {
+		var answers = paragraphAdapter.getParagraphAnswers()
+				.stream()
+				.map(paragraph ->
+						ListAnswer.builder()
+								.start(paragraph.getStart())
+								.correctAnswer(paragraph.getAnswer())
+								.end(paragraph.getEnd())
+								.possibleAnswers(List.of(paragraph.getPossibleAnswers().split(",")))
+								.build()
+				)
+				.collect(Collectors.toList());
+		return SelectFromList.builder().question(question).answers(answers).build();
+	}
+
+	private Choice toChoice(String question) {
+		var answers = choiceAdapter.getPossibleAnswers()
+				.stream()
+				.map(choice ->
+						ChoiceAnswer.builder()
+								.correct(choice.isCorrect())
+								.content(choice.getAnswer())
+								.build()
+				)
+				.collect(Collectors.toList());
+		var possibleAnswers = answers.stream().map(ChoiceAnswer::getContent).collect(Collectors.toList());
+		var correct = answers.stream().filter(ChoiceAnswer::isCorrect).findFirst().map(ChoiceAnswer::getContent).orElse(null);
+		return Choice.builder().question(question).possibleAnswers(possibleAnswers).correctAnswer(correct).build();
+	}
+
+	private MultipleChoice toMultipleChoice(String question) {
+		var answers = choiceAdapter.getPossibleAnswers()
+				.stream()
+				.map(choice ->
+						ChoiceAnswer.builder()
+								.correct(choice.isCorrect())
+								.content(choice.getAnswer())
+								.build()
+				)
+				.collect(Collectors.toList());
+		return MultipleChoice.builder().question(question).answers(answers).build();
+	}
+
+	private MultipleTruthOrFalse toMultipleTruthOrFalse(String question) {
+		var answers = choiceAdapter.getPossibleAnswers()
+				.stream()
+				.map(choice ->
+						ChoiceAnswer.builder()
+								.correct(choice.isCorrect())
+								.content(choice.getAnswer())
+								.build()
+				)
+				.collect(Collectors.toList());
+		return MultipleTruthOrFalse.builder().question(question).tasks(answers).build();
+	}
+
+	private TruthOrFalse toTruthOrFalse(String question) {
+		return TruthOrFalse.builder().question(question).correct(checkBoxTruthOrFalse.isChecked()).build();
 	}
 }
