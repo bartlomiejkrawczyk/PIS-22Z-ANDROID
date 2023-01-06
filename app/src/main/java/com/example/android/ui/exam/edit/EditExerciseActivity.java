@@ -15,6 +15,7 @@ import com.example.android.R;
 import com.example.android.data.model.ParagraphAnswer;
 import com.example.android.data.model.PossibleAnswer;
 import com.example.android.databinding.ActivityEditExerciseBinding;
+import com.example.android.util.UiUtility;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import com.example.model.exam.FillBlanks;
@@ -35,16 +36,6 @@ import java.util.stream.Collectors;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
-	private final Map<String, Class<? extends Exercise>> exercises = Map.of(
-			getString(R.string.flash_card), FlashCard.class,
-			getString(R.string.fill_blanks), FillBlanks.class,
-			getString(R.string.select_from_list), SelectFromList.class,
-			getString(R.string.single_choice), Choice.class,
-			getString(R.string.multiple_choice), MultipleChoice.class,
-			getString(R.string.truth_or_false), TruthOrFalse.class,
-			getString(R.string.multiple_truth_or_false), MultipleTruthOrFalse.class
-	);
-
 	private final Map<InputType, Runnable> spinnerHandler = Map.of(
 			InputType.SIMPLE, this::initFlashCard,
 			InputType.TRUTH_OR_FALSE, this::initTruthOrFalse,
@@ -61,6 +52,8 @@ public class EditExerciseActivity extends AppCompatActivity {
 			MultipleTruthOrFalse.class, this::toMultipleTruthOrFalse,
 			TruthOrFalse.class, this::toTruthOrFalse
 	);
+
+	private Map<String, Class<? extends Exercise>> exercises;
 
 	private ExerciseViewModel viewModel;
 
@@ -92,9 +85,22 @@ public class EditExerciseActivity extends AppCompatActivity {
 		this.checkBoxTruthOrFalse = binding.checkboxTruthOrFalse;
 		this.listViewAnswers = binding.listViewAnswers;
 
+		setupExercises();
 		setupViewModel();
 		setupSpinner();
 		setupDoneButton();
+	}
+
+	private void setupExercises() {
+		exercises = Map.of(
+				getString(R.string.flash_card), FlashCard.class,
+				getString(R.string.fill_blanks), FillBlanks.class,
+				getString(R.string.select_from_list), SelectFromList.class,
+				getString(R.string.single_choice), Choice.class,
+				getString(R.string.multiple_choice), MultipleChoice.class,
+				getString(R.string.truth_or_false), TruthOrFalse.class,
+				getString(R.string.multiple_truth_or_false), MultipleTruthOrFalse.class
+		);
 	}
 
 	private void setupViewModel() {
@@ -150,7 +156,10 @@ public class EditExerciseActivity extends AppCompatActivity {
 		choiceAdapter = new ChoiceAnswerArrayAdapter(this, answers);
 		listViewAnswers.setAdapter(choiceAdapter);
 
-		buttonAdd.setOnClickListener(v -> choiceAdapter.add(new PossibleAnswer()));
+		buttonAdd.setOnClickListener(v -> {
+			choiceAdapter.add(new PossibleAnswer());
+			UiUtility.setListViewHeightBasedOnChildren(listViewAnswers);
+		});
 	}
 
 	private void initParagraphAnswer() {
@@ -164,7 +173,10 @@ public class EditExerciseActivity extends AppCompatActivity {
 		paragraphAdapter = new ParagraphAnswerArrayAdapter(this, answers);
 		listViewAnswers.setAdapter(paragraphAdapter);
 
-		buttonAdd.setOnClickListener(v -> paragraphAdapter.add(new ParagraphAnswer()));
+		buttonAdd.setOnClickListener(v -> {
+			paragraphAdapter.add(new ParagraphAnswer());
+			UiUtility.setListViewHeightBasedOnChildren(listViewAnswers);
+		});
 	}
 
 	private void setupDoneButton() {

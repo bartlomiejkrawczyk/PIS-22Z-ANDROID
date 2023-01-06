@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -18,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.R;
 import com.example.android.ui.section.SectionActivity;
+import com.example.android.util.UiUtility;
 import com.example.model.Section;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,31 +73,12 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, subSections);
 			viewHolder.subSections.setAdapter(arrayAdapter);
 
-			setListViewHeightBasedOnChildren(viewHolder.subSections);
+			UiUtility.setListViewHeightBasedOnChildren(viewHolder.subSections);
 		} else {
 			viewHolder.sectionLinearLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.secondary_background));
 			viewHolder.subSections.setAdapter(null);
 			viewHolder.subSections.setVisibility(View.GONE);
 		}
-	}
-
-	public static void setListViewHeightBasedOnChildren(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
-			return;
-		}
-
-		int totalHeight = 0;
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, listView);
-			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
-		}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
-		listView.requestLayout();
 	}
 
 	@Override
