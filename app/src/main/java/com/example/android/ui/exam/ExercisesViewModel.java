@@ -106,50 +106,63 @@ public class ExercisesViewModel extends ViewModel {
 	private static List<Exercise> getFallbackExercises() {
 		return List.of(
 				Choice.builder()
-						.question("Jaka jest twoja ulubiona litera?")
-						.correctAnswer("A")
-						.possibleAnswers(List.of("A", "B", "C"))
+						.question("Czemu służy podział na poziomy agregacji (aggregation levels) w adresie IP v.6?")
+						.correctAnswer("zmniejszeniu liczby bitów analizowanych przez routery")
+						.possibleAnswers(List.of(
+								"uproszczeniu działania odwrswitchotnego DNS",
+								"zmniejszeniu liczby bitów analizowanych przez routery",
+								"odzwierciedleniu hierarchii DNS",
+								"agregacji protokołów warstwy czwartej"
+						))
 						.build(),
 				MultipleChoice.builder()
-						.question("Jakie są twoje ulubione litery?")
+						.question("Jakie rodzaje serwerów występują w systemie DNS?")
 						.answers(List.of(
-								ChoiceAnswer.builder().content("A").correct(true).build(),
-								ChoiceAnswer.builder().content("B").correct(false).build(),
-								ChoiceAnswer.builder().content("C").correct(true).build(),
-								ChoiceAnswer.builder().content("D").correct(false).build()
+								ChoiceAnswer.builder().content("secondary master").correct(false).build(),
+								ChoiceAnswer.builder().content("secondary").correct(true).build(),
+								ChoiceAnswer.builder().content("primary").correct(true).build(),
+								ChoiceAnswer.builder().content("caching only").correct(true).build(),
+								ChoiceAnswer.builder().content("primary slave").correct(false).build(),
+								ChoiceAnswer.builder().content("duplicating").correct(false).build()
 						))
 						.build(),
 				TruthOrFalse.builder()
-						.question("Czy mój ulubiony kolor to zielony?")
+						.question("W protokole TCP buforowanie oraz potiwerdzanie transmisji następuje w czwartej warstwie modelu ISO/OSI.")
 						.correct(true)
 						.build(),
 				MultipleTruthOrFalse.builder()
-						.question("")
+						.question("Jakie  rekordów mogą występować w systemie DNS?")
 						.tasks(List.of(
-								ChoiceAnswer.builder().content("Am I a god?").correct(true).build(),
-								ChoiceAnswer.builder().content("Am I a genius?").correct(true).build(),
-								ChoiceAnswer.builder().content("Am I a stupid?").correct(false).build()
+								ChoiceAnswer.builder().content("CNAME").correct(true).build(),
+								ChoiceAnswer.builder().content("IN").correct(false).build(),
+								ChoiceAnswer.builder().content("PTR").correct(true).build(),
+								ChoiceAnswer.builder().content("HINFO").correct(true).build(),
+								ChoiceAnswer.builder().content("WKS").correct(true).build(),
+								ChoiceAnswer.builder().content("SOA").correct(true).build()
 						))
 						.build(),
 				FlashCard.builder()
-						.question("Jaki skrót ma Transmission Control Protocol?")
-						.answer("TCP")
+						.question("Protokół PPTP jest kombinacją protokołów:")
+						.answer("PPP i GRE")
 						.build(),
 				FillBlanks.builder()
 						.question("Uzupełnij luki:")
 						.answers(List.of(
-								BlankAnswer.builder().start("Wczorajsze poranne ").answer("śniadanie").end(" bardzo mi smakowało.").build(),
-								BlankAnswer.builder().start("Po południu jadłem bardzo dobry ").answer("obiad")
-										.end(", a wieczorem zjem kolację.").build()
+								BlankAnswer.builder().start("Parametr \"expire\" rekordu SOA jest wyrażony w:").answer("sekundach").end("").build(),
+								BlankAnswer.builder().start(", a parametr \"refresh\" wyrażony w:").answer("sekundach").end("").build()
 						))
 						.build(),
 				SelectFromList.builder()
 						.question("Wybierz z listy dostępnych wartości:")
 						.answers(List.of(
-								ListAnswer.builder().start("Wczorajsze poranne ").possibleAnswers(List.of("śniadanie", "obiad"))
-										.correctAnswer("śniadanie").end(" bardzo mi smakowało.").build(),
-								ListAnswer.builder().start("Po południu jadłem bardzo dobry ").possibleAnswers(List.of("śniadanie", "obiad"))
-										.correctAnswer("obiad").end(", a wieczorem zjem kolację.").build()
+								ListAnswer.builder().start("Początkowe dwa człony zapytania do odwrotnego DNSa w przypadku IP v.6 odpowiadają: ")
+										.possibleAnswers(List.of(
+												"pierwszym dwu bajtom adresu IP",
+												"ostatnim dwu cyfrom heksadecymalnym adresu IP",
+												"pierwszym dwu cyfrom heksadecymalnym adresu IP",
+												"pierwszym dwu dwubajtowym słowom adresu IP"
+										))
+										.correctAnswer("ostatnim dwu cyfrom heksadecymalnym adresu IP").end("").build()
 						))
 						.build()
 		);
