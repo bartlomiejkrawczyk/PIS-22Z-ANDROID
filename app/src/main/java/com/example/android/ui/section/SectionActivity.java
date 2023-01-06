@@ -82,6 +82,7 @@ public class SectionActivity extends AppCompatActivity {
 		UiUtility.setListViewHeightBasedOnChildren(conceptListView);
 		conceptListView.setOnItemClickListener((parent, view, position, id) -> {
 			var intent = new Intent(this, ConceptActivity.class);
+			intent.putExtra(SectionActivity.ARG_SECTION_ID, sectionId);
 			intent.putExtra(ConceptActivity.ARG_CONCEPT_ID, concepts.get(position).getId());
 			startActivity(intent);
 		});

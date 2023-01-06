@@ -1,10 +1,6 @@
 package com.example.android.ui.concept;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.R;
 import com.example.android.util.TextChangedHandler;
-import com.example.android.web.ApiClient;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
 import com.google.gson.Gson;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.function.Consumer;
 
 public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private boolean editable = false;
 	private Concept concept;
 	private Concept conceptEditable;
-	private final Context context;
 
-	public ConceptRecyclerViewAdapter(Context context) {
+	private final Consumer<Concept> onSuccess;
+
+	// TODO: This recycler view should be divided into two separate activities / but there is no time left :(
+	public ConceptRecyclerViewAdapter(Consumer<Concept> onSuccess) {
 		this.concept = new Concept();
-		this.context = context;
+		this.onSuccess = onSuccess;
 	}
 
 	private Concept copyConcept(Concept concept) {
@@ -111,7 +106,7 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 			conceptEditable.setSummary(holder.editTextConceptContent.getText().toString());
 
 			concept = copyConcept(conceptEditable);
-			pushConcept();
+			onSuccess.accept(concept);
 			changeDisplayMode();
 		});
 	}
@@ -237,36 +232,5 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 	public void changeDisplayMode() {
 		editable = !editable;
 		notifyDataSetChanged();
-	}
-
-	private void pushConcept() {
-		var apiClient = ApiClient.getInstance();
-		concept.setId(0);
-		int i = 1;
-		for (var paragraph : concept.getParagraphs()) {
-			paragraph.setNumber(i);
-			i = i + 1;
-		}
-		Call<Concept> call = apiClient.saveConcept(1, concept);
-		call.enqueue(new Callback<>() {
-			@SuppressLint("NotifyDataSetChanged")
-			@Override
-			public void onResponse(@NonNull Call<Concept> call, @NonNull Response<Concept> response) {
-				if (response.isSuccessful() && response.body() != null) {
-					concept = response.body();
-					var settings = context.getSharedPreferences("Android", Activity.MODE_PRIVATE);
-					SharedPreferences.Editor editor = settings.edit();
-					editor.putInt("concept", concept.getId());
-					editor.apply();
-				} else {
-					Log.e("Concept", "Response concept failure");
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Concept> call, @NonNull Throwable t) {
-				Log.e("Concept", "Load concept failure");
-			}
-		});
 	}
 }
