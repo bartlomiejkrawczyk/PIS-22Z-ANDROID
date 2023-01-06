@@ -7,6 +7,7 @@ import com.example.model.exam.Exercise;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -38,9 +39,18 @@ public interface ApiClient {
 	@GET("section/")
 	Call<List<Section>> getRootSections();
 
+	@POST("section/{sectionId}")
+	Call<Section> saveSection(@Path(value = "sectionId") Integer sectionId, @Body Section section);
+
+	@DELETE("section/{sectionId")
+	Call<Void> deleteSection(@Path(value = "sectionId") int sectionId);
+
 	@GET("section/id/{sectionId}")
 	Call<Section> getSectionById(@Path(value = "sectionId") int sectionId);
 
 	@GET("exercise/{sectionId}")
 	Call<List<Exercise>> getExercisesBySectionId(@Path(value = "sectionId") int sectionId);
+
+	@POST("exercise/{sectionId}")
+	Call<Exercise> saveExercise(@Path(value = "sectionId") int sectionId, @Body Exercise exercise);
 }

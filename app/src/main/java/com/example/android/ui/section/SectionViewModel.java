@@ -19,6 +19,10 @@ public class SectionViewModel extends ViewModel {
 		return sectionLiveData;
 	}
 
+	public Section getSection() {
+		return sectionLiveData.getValue();
+	}
+
 	public void populateSection(int sectionId) {
 		var apiClient = ApiClient.getInstance();
 		var call = apiClient.getSectionById(sectionId);
@@ -32,6 +36,39 @@ public class SectionViewModel extends ViewModel {
 			@Override
 			public void onFailure(@NonNull Call<Section> call, @NonNull Throwable t) {
 				sectionLiveData.setValue(getFallbackSection());
+			}
+		});
+	}
+
+	public void saveSection(int parentSectionId, Section section) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.saveSection(parentSectionId != 0 ? parentSectionId : null, section);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Section> call, @NonNull Response<Section> response) {
+				var result = Optional.ofNullable(response.body()).orElse(section);
+				sectionLiveData.setValue(result);
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Section> call, @NonNull Throwable t) {
+				sectionLiveData.setValue(section);
+			}
+		});
+	}
+
+	public void deleteSection(int sectionId) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.deleteSection(sectionId);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+				// Do nothing
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+				// Do nothing
 			}
 		});
 	}

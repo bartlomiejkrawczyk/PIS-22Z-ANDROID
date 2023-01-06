@@ -15,6 +15,7 @@ import com.example.android.R;
 import com.example.android.data.model.ParagraphAnswer;
 import com.example.android.data.model.PossibleAnswer;
 import com.example.android.databinding.ActivityEditExerciseBinding;
+import com.example.android.ui.section.SectionActivity;
 import com.example.android.util.UiUtility;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
@@ -70,12 +71,13 @@ public class EditExerciseActivity extends AppCompatActivity {
 	private ChoiceAnswerArrayAdapter choiceAdapter;
 	private ParagraphAnswerArrayAdapter paragraphAdapter;
 
+	private int sectionId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		var binding = ActivityEditExerciseBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
-
 
 		this.spinnerExerciseType = binding.spinnerPossibleExercises;
 		this.editTextQuestion = binding.editTextQuestion;
@@ -85,6 +87,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 		this.checkBoxTruthOrFalse = binding.checkboxTruthOrFalse;
 		this.listViewAnswers = binding.listViewAnswers;
 
+		sectionId = getIntent().getIntExtra(SectionActivity.ARG_SECTION_ID, 0);
 		setupExercises();
 		setupViewModel();
 		setupSpinner();
@@ -186,7 +189,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 			var mapper = exerciseMappers.get(chosen);
 			if (mapper != null) {
 				var exercise = mapper.apply(question);
-				viewModel.insertExercise(exercise);
+				viewModel.insertExercise(sectionId, exercise);
 			}
 		});
 	}
