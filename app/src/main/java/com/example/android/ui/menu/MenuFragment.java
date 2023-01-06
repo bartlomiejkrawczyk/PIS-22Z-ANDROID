@@ -22,6 +22,7 @@ public class MenuFragment extends Fragment {
 		binding = FragmentMenuBinding.inflate(inflater, container, false);
 		View root = binding.getRoot();
 
+		var progressBar = binding.progressBarMainMenu;
 		var recyclerView = binding.menuRecyclerView;
 		var recyclerViewAdapter = new SectionRecyclerViewAdapter(this.getContext());
 
@@ -33,7 +34,10 @@ public class MenuFragment extends Fragment {
 		recyclerView.setAdapter(recyclerViewAdapter);
 
 		menuViewModel.getSectionsLiveData()
-				.observe(getViewLifecycleOwner(), recyclerViewAdapter::setSections);
+				.observe(getViewLifecycleOwner(), sections -> {
+					progressBar.setVisibility(View.GONE);
+					recyclerViewAdapter.setSections(sections);
+				});
 
 		return root;
 	}

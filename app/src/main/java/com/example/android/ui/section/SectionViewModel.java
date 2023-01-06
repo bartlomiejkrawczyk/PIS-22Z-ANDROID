@@ -1,45 +1,82 @@
 package com.example.android.ui.section;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.android.web.ApiClient;
 import com.example.model.Section;
-import java.util.List;
+import java.util.Optional;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SectionViewModel extends ViewModel {
 
 	private final MutableLiveData<Section> sectionLiveData = new MutableLiveData<>();
 
-	public SectionViewModel() {
-		populateSection();
-	}
-
 	public LiveData<Section> getSectionLiveData() {
 		return sectionLiveData;
 	}
 
-	private void populateSection() {
-		var section0 = Section.builder()
-				.id(1)
-				.name("Usługi sieciowe")
-				.build();
+	public Section getSection() {
+		return sectionLiveData.getValue();
+	}
 
-		var section1 = Section.builder()
-				.id(1)
-				.name("Serwery DNS")
-				.build();
+	public void populateSection(int sectionId) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.getSectionById(sectionId);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Section> call, @NonNull Response<Section> response) {
+				var result = Optional.ofNullable(response.body()).orElseGet(SectionViewModel::getFallbackSection);
+				sectionLiveData.setValue(result);
+			}
 
-		var section2 = Section.builder()
-				.id(1)
-				.name("Protokoły TCP i UDP")
-				.build();
+			@Override
+			public void onFailure(@NonNull Call<Section> call, @NonNull Throwable t) {
+				sectionLiveData.setValue(getFallbackSection());
+			}
+		});
+	}
 
-		var section3 = Section.builder()
+	public void saveSection(int parentSectionId, Section section) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.saveSection(parentSectionId != 0 ? parentSectionId : null, section);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Section> call, @NonNull Response<Section> response) {
+				var result = Optional.ofNullable(response.body()).orElse(section);
+				sectionLiveData.setValue(result);
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Section> call, @NonNull Throwable t) {
+				sectionLiveData.setValue(section);
+			}
+		});
+	}
+
+	public void deleteSection(int sectionId) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.deleteSection(sectionId);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+				// Do nothing
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+				// Do nothing
+			}
+		});
+	}
+
+	private static Section getFallbackSection() {
+		return Section.builder()
 				.id(1)
 				.name("Sieci Komputerowe")
-				.subSections(List.of(section0, section1, section2))
 				.build();
-
-		sectionLiveData.setValue(section3);
 	}
 }

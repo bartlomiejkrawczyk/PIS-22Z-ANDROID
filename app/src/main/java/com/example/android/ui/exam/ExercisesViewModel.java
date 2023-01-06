@@ -1,8 +1,10 @@
 package com.example.android.ui.exam;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.android.web.ApiClient;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
 import com.example.model.exam.FillBlanks;
@@ -16,6 +18,9 @@ import com.example.model.exam.answer.ChoiceAnswer;
 import com.example.model.exam.answer.ListAnswer;
 import java.util.List;
 import java.util.Optional;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ExercisesViewModel extends ViewModel {
 
@@ -83,14 +88,30 @@ public class ExercisesViewModel extends ViewModel {
 	}
 
 	public void populateExercises(int sectionId) {
-		var result = List.of(
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.getExercisesBySectionId(sectionId);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<List<Exercise>> call, @NonNull Response<List<Exercise>> response) {
+				Optional.ofNullable(response.body()).orElseGet(ExercisesViewModel::getFallbackExercises);
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<List<Exercise>> call, @NonNull Throwable t) {
+				exercisesLiveData.setValue(getFallbackExercises());
+			}
+		});
+	}
+
+	private static List<Exercise> getFallbackExercises() {
+		return List.of(
 				Choice.builder()
 						.question("Jaka jest twoja ulubiona litera?")
 						.correctAnswer("A")
 						.possibleAnswers(List.of("A", "B", "C"))
 						.build(),
 				MultipleChoice.builder()
-						.question("Jakie są towoje ulubione litery?")
+						.question("Jakie są twoje ulubione litery?")
 						.answers(List.of(
 								ChoiceAnswer.builder().content("A").correct(true).build(),
 								ChoiceAnswer.builder().content("B").correct(false).build(),
@@ -132,7 +153,5 @@ public class ExercisesViewModel extends ViewModel {
 						))
 						.build()
 		);
-
-		exercisesLiveData.setValue(result);
 	}
 }
