@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.android.databinding.ActivityEditSectionBinding;
-import com.example.android.ui.ConceptActivity;
 import com.example.android.ui.MainMenuActivity;
+import com.example.android.ui.concept.ConceptActivity;
 import com.example.android.ui.exam.edit.EditExerciseActivity;
 import com.example.android.ui.section.SectionActivity;
 

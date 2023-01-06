@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.android.databinding.ActivitySectionBinding;
-import com.example.android.ui.ConceptActivity;
+import com.example.android.ui.concept.ConceptActivity;
 import com.example.android.ui.exam.ExamActivity;
 import com.example.android.ui.exam.State;
 import com.example.android.ui.section.edit.EditSectionActivity;
@@ -82,6 +82,7 @@ public class SectionActivity extends AppCompatActivity {
 		UiUtility.setListViewHeightBasedOnChildren(conceptListView);
 		conceptListView.setOnItemClickListener((parent, view, position, id) -> {
 			var intent = new Intent(this, ConceptActivity.class);
+			intent.putExtra(ConceptActivity.ARG_CONCEPT_ID, concepts.get(position).getId());
 			startActivity(intent);
 		});
 	}
@@ -95,6 +96,8 @@ public class SectionActivity extends AppCompatActivity {
 		subSectionsListView.setAdapter(arrayAdapter);
 		subSectionsListView.setOnItemClickListener((parent, view, position, id) -> {
 			var intent = new Intent(this, SectionActivity.class);
+			intent.putExtra(ARG_PARENT_SECTION_ID, sectionId);
+			intent.putExtra(ARG_SECTION_ID, sections.get(position).getId());
 			startActivity(intent);
 		});
 		UiUtility.setListViewHeightBasedOnChildren(subSectionsListView);
