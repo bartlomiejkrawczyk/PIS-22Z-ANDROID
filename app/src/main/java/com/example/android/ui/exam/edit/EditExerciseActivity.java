@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import com.example.android.R;
 import com.example.android.data.model.ParagraphAnswer;
 import com.example.android.data.model.PossibleAnswer;
@@ -61,6 +62,8 @@ public class EditExerciseActivity extends AppCompatActivity {
 			TruthOrFalse.class, this::toTruthOrFalse
 	);
 
+	private ExerciseViewModel viewModel;
+
 	private Spinner spinnerExerciseType;
 	private EditText editTextQuestion;
 
@@ -80,6 +83,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 		var binding = ActivityEditExerciseBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
+
 		this.spinnerExerciseType = binding.spinnerPossibleExercises;
 		this.editTextQuestion = binding.editTextQuestion;
 		this.buttonAdd = binding.buttonAdd;
@@ -88,8 +92,14 @@ public class EditExerciseActivity extends AppCompatActivity {
 		this.checkBoxTruthOrFalse = binding.checkboxTruthOrFalse;
 		this.listViewAnswers = binding.listViewAnswers;
 
+		setupViewModel();
 		setupSpinner();
 		setupDoneButton();
+	}
+
+	private void setupViewModel() {
+		this.viewModel = new ViewModelProvider(this).get(ExerciseViewModel.class);
+		viewModel.getSentLiveData().observe(this, sent -> finish());
 	}
 
 	private void setupSpinner() {
@@ -164,6 +174,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 			var mapper = exerciseMappers.get(chosen);
 			if (mapper != null) {
 				var exercise = mapper.apply(question);
+				viewModel.insertExercise(exercise);
 			}
 		});
 	}
