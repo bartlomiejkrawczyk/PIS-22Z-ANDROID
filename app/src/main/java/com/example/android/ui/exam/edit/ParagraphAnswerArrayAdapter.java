@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.android.data.model.ParagraphAnswer;
 import com.example.android.databinding.ViewParagraphAnswerBinding;
+import com.example.android.util.TextChangedHandler;
 import java.util.List;
 
 public class ParagraphAnswerArrayAdapter extends ArrayAdapter<ParagraphAnswer> {

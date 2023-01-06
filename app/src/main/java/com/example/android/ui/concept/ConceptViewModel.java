@@ -22,6 +22,27 @@ public class ConceptViewModel extends ViewModel {
 		return conceptLiveData;
 	}
 
+	public void publishConcept(int sectionId, Concept concept) {
+		int i = 1;
+		for (var paragraph : concept.getParagraphs()) {
+			paragraph.setNumber(i);
+			i = i + 1;
+		}
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.saveConcept(sectionId, concept);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Concept> call, @NonNull Response<Concept> response) {
+				// Do nothing for now
+			}
+
+			@Override
+			public void onFailure(@NonNull Call<Concept> call, @NonNull Throwable t) {
+				// Do nothing for now
+			}
+		});
+	}
+
 	public void populateConcept(int conceptId) {
 		var apiClient = ApiClient.getInstance();
 		var call = apiClient.getConceptById(conceptId);
