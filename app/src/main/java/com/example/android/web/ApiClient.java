@@ -2,6 +2,8 @@ package com.example.android.web;
 
 import com.example.model.Concept;
 import com.example.model.Definition;
+import com.example.model.Section;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -25,4 +27,7 @@ public interface ApiClient {
 
 	@POST("concept/{sectionId}")
 	Call<Concept> saveConcept(@Path(value = "sectionId") int sectionId, @Body Concept concept);
+
+	@GET("section/")
+	Call<List<Section>> getRootSections();
 }

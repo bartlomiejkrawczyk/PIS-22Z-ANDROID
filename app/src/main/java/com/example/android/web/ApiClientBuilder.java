@@ -37,11 +37,12 @@ public class ApiClientBuilder {
 		HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
 		loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+		// TODO: Increase timeout to 30s
 		return new OkHttpClient.Builder()
 				.addInterceptor(loggingInterceptor)
-				.writeTimeout(30, TimeUnit.SECONDS)
-				.readTimeout(30, TimeUnit.SECONDS)
-				.connectTimeout(30, TimeUnit.SECONDS)
+				.writeTimeout(3, TimeUnit.SECONDS)
+				.readTimeout(3, TimeUnit.SECONDS)
+				.connectTimeout(3, TimeUnit.SECONDS)
 				.build();
 	}
 
