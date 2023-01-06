@@ -9,6 +9,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import com.example.android.R;
 import com.example.android.ui.login.LoginActivity;
+import com.example.android.ui.registration.RegistrationActivity;
 import com.example.android.util.SettingsUtility;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -58,8 +59,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		var passwordPreference = (Preference) findPreference(getString(R.string.password_key));
 		assert passwordPreference != null;
 		passwordPreference.setOnPreferenceClickListener(pref -> {
-			var intent = new Intent(getContext(), LoginActivity.class);
-			// TODO: Change to change password activity
+			var intent = new Intent(getContext(), RegistrationActivity.class);
 			startActivity(intent);
 			return true;
 		});
