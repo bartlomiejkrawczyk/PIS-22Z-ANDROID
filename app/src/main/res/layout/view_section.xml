@@ -37,7 +37,8 @@
 				android:layout_height="wrap_content"
 				android:text="@string/section"
 				android:textAppearance="@style/title_medium"
-				android:textStyle="bold" />
+				android:textStyle="bold"
+				android:textColor="#000" />
 
 			<Space
 				android:layout_width="0dp"
