@@ -15,6 +15,7 @@ import com.example.android.databinding.ActivitySectionBinding;
 import com.example.android.ui.ConceptActivity;
 import com.example.android.ui.exam.ExamActivity;
 import com.example.android.ui.exam.State;
+import com.example.android.ui.section.edit.EditSectionActivity;
 import com.example.model.Concept;
 import com.example.model.Section;
 import java.util.List;
@@ -22,12 +23,18 @@ import java.util.stream.Collectors;
 
 public class SectionActivity extends AppCompatActivity {
 
+	public static final String ARG_PARENT_SECTION_ID = "parent_section_id";
+	public static final String ARG_SECTION_ID = "section_id";
+
 	private ActivitySectionBinding binding;
 	private TextView conceptTextView;
 	private ListView conceptListView;
 	private ListView subSectionsListView;
 	private Button testButton;
 	private Button studyButton;
+	private Button editButton;
+
+	private int sectionId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +42,15 @@ public class SectionActivity extends AppCompatActivity {
 		this.binding = ActivitySectionBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
+		var previousIntent = getIntent();
+		sectionId = previousIntent.getIntExtra(ARG_SECTION_ID, 0);
+
 		this.conceptTextView = binding.sectionTextView;
 		this.conceptListView = binding.conceptsView.conceptsListView;
 		this.subSectionsListView = binding.subSectionsView.subSectionsListView;
 		this.testButton = binding.sectionTestButton;
 		this.studyButton = binding.sectionExamButton;
+		this.editButton = binding.buttonEdit;
 
 		new ViewModelProvider(this)
 				.get(SectionViewModel.class)
@@ -65,6 +76,12 @@ public class SectionActivity extends AppCompatActivity {
 		studyButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
 			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
+			startActivity(intent);
+		});
+
+		editButton.setOnClickListener(v -> {
+			var intent = new Intent(this, EditSectionActivity.class);
+			intent.putExtra(ARG_SECTION_ID, sectionId);
 			startActivity(intent);
 		});
 	}

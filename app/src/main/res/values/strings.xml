@@ -74,4 +74,8 @@
 	<string name="flash_card">Flash card</string>
 	<string name="truth_or_false">Truth or False</string>
 	<string name="multiple_truth_or_false">Multiple Truth or False</string>
+	<string name="hint_section">Section</string>
+	<string name="button_add_concept">Add Concept</string>
+	<string name="button_add_sub_section">Add Sub-Section</string>
+	<string name="button_add_exercise">Add Exercise</string>
 </resources>

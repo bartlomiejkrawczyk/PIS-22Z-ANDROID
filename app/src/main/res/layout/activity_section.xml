@@ -6,22 +6,43 @@
 	android:layout_height="match_parent"
 	tools:context=".ui.section.SectionActivity">
 
-	<EditText
-		android:id="@+id/section_edit_text"
-		style="@style/Theme.Android.editText.search"
-		app:layout_constraintTop_toTopOf="parent"
-		android:autofillHints=""
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/layout_search"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent" />
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent">
+
+		<EditText
+			android:id="@+id/section_edit_text"
+			style="@style/Theme.Android.editText.search"
+			android:autofillHints=""
+			android:layout_width="0dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toStartOf="@id/button_edit"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<Button
+			android:id="@+id/button_edit"
+			style="@style/Theme.Android.iconButton"
+			app:icon="@drawable/ic_edit"
+			android:layout_margin="8dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 	<ScrollView
 		android:id="@+id/section_scroll_view"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
-		app:layout_constraintTop_toBottomOf="@id/section_edit_text"
 		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toEndOf="parent">
+		app:layout_constraintTop_toBottomOf="@id/layout_search">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -32,11 +53,11 @@
 				android:id="@+id/section_text_view"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/text_section"
-				android:contentDescription=""
-				android:textSize="30sp"
 				android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-				android:layout_marginVertical="@dimen/activity_vertical_margin" />
+				android:layout_marginVertical="@dimen/activity_vertical_margin"
+				android:contentDescription=""
+				android:text="@string/text_section"
+				android:textSize="30sp" />
 
 			<include
 				android:id="@+id/concepts_view"
@@ -49,11 +70,11 @@
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/text_check_your_knowledge"
-				android:contentDescription=""
-				android:textSize="30sp"
 				android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-				android:layout_marginVertical="@dimen/activity_vertical_margin" />
+				android:layout_marginVertical="@dimen/activity_vertical_margin"
+				android:contentDescription=""
+				android:text="@string/text_check_your_knowledge"
+				android:textSize="30sp" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
