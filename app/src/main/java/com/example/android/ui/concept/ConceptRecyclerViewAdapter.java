@@ -1,11 +1,9 @@
-package com.example.android.ui;
+package com.example.android.ui.concept;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.R;
+import com.example.android.util.TextChangedHandler;
 import com.example.android.web.ApiClient;
 import com.example.model.Concept;
 import com.example.model.Paragraph;
@@ -26,24 +25,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-	private static final int CONCEPT = 1;
-	private static final int PARAGRAPH = 2;
-	private static final int CONCEPT_EDITABLE = 3;
-	private static final int PARAGRAPH_EDITABLE = 4;
-	private static final int ADD_BUTTON = 5;
 	private boolean editable = false;
 	private Concept concept;
 	private Concept conceptEditable;
-	private Context context;
+	private final Context context;
 
 	public ConceptRecyclerViewAdapter(Context context) {
 		this.concept = new Concept();
 		this.context = context;
-	}
-
-	public ConceptRecyclerViewAdapter(Concept concept) {
-		this.concept = concept;
-		this.conceptEditable = copyConcept(concept);
 	}
 
 	private Concept copyConcept(Concept concept) {
@@ -55,108 +44,93 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 	@NonNull
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		if (viewType == CONCEPT) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_concept, parent, false);
-			return new ConceptViewHolder(view);
-		} else if (viewType == PARAGRAPH) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_paragraph, parent, false);
-			return new ParagraphViewHolder(view);
-		} else if (viewType == CONCEPT_EDITABLE) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_concept_edit, parent, false);
-			return new ConceptEditableViewHolder(view);
-		} else if (viewType == PARAGRAPH_EDITABLE) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_paragraph_edit, parent, false);
-			return new ParagraphEditableViewHolder(view);
-		} else if (viewType == ADD_BUTTON) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_paragraph_new, parent, false);
-			return new AddButtonViewHolder(view);
-		}
-		throw new UnsupportedOperationException("Unsupported type exception");
+		var elementType = ElementType.of(viewType);
+		var view = LayoutInflater.from(parent.getContext()).inflate(elementType.getResource(), parent, false);
+		return elementType.getConstructor().apply(view);
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if (holder instanceof ConceptViewHolder) {
+		if (holder instanceof ConceptViewHolder conceptViewHolder) {
 			if (concept != null) {
-				((ConceptViewHolder) holder).textConceptName.setText(concept.getKeyPhrase());
-				((ConceptViewHolder) holder).textConceptContent.setText(concept.getSummary());
-				((ConceptViewHolder) holder).buttonEditConcept.setOnClickListener((View v) -> {
-					conceptEditable = copyConcept(concept);
-					changeDisplayMode();
-				});
+				bindConceptViewHolder(conceptViewHolder);
 			}
-		} else if (holder instanceof ParagraphViewHolder) {
-			Paragraph paragraph = concept.getParagraphs().get(position - 1);
-			if (paragraph != null) {
-				((ParagraphViewHolder) holder).textParagraphName.setText(paragraph.getHeader());
-				((ParagraphViewHolder) holder).textParagraphContent.setText(paragraph.getDescription());
-			}
-		} else if (holder instanceof ConceptEditableViewHolder) {
+		} else if (holder instanceof ParagraphViewHolder paragraphViewHolder) {
+			bindParagraphViewHolder(position, paragraphViewHolder);
+		} else if (holder instanceof ConceptEditableViewHolder conceptEditableViewHolder) {
 			if (conceptEditable != null) {
-				((ConceptEditableViewHolder) holder).editTextConceptName.setText(conceptEditable.getKeyPhrase());
-				((ConceptEditableViewHolder) holder).editTextConceptContent.setText(conceptEditable.getSummary());
-				((ConceptEditableViewHolder) holder).buttonConceptClose.setOnClickListener((View v) -> {
-					conceptEditable = copyConcept(concept);
-					changeDisplayMode();
-				});
-				((ConceptEditableViewHolder) holder).buttonConceptAccept.setOnClickListener((View v) -> {
-					conceptEditable.setKeyPhrase(((ConceptEditableViewHolder) holder).editTextConceptName.getText().toString());
-					conceptEditable.setSummary(((ConceptEditableViewHolder) holder).editTextConceptContent.getText().toString());
-
-					concept = copyConcept(conceptEditable);
-					pushConcept();
-					changeDisplayMode();
-				});
+				bindConceptEditableViewHolder((ConceptEditableViewHolder) holder, conceptEditableViewHolder);
 			}
-		} else if (holder instanceof ParagraphEditableViewHolder) {
-			Paragraph paragraphEditable = conceptEditable.getParagraphs().get(position - 1);
-			if (paragraphEditable != null) {
-				((ParagraphEditableViewHolder) holder).editTextParagraphName.setText(paragraphEditable.getHeader());
-				((ParagraphEditableViewHolder) holder).editTextParagraphContent.setText(paragraphEditable.getDescription());
-				((ParagraphEditableViewHolder) holder).editTextParagraphName.addTextChangedListener(new TextWatcher() {
-					@Override
-					public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-					}
-
-					@Override
-					public void onTextChanged(CharSequence s, int start, int before, int count) {
-						if (s.length() != 0) {
-							paragraphEditable.setHeader(s.toString());
-						}
-					}
-
-					@Override
-					public void afterTextChanged(Editable s) {
-					}
-				});
-				((ParagraphEditableViewHolder) holder).editTextParagraphContent.addTextChangedListener(new TextWatcher() {
-					@Override
-					public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-					}
-
-					@Override
-					public void onTextChanged(CharSequence s, int start, int before, int count) {
-						if (s.length() != 0) {
-							paragraphEditable.setDescription(s.toString());
-						}
-					}
-
-					@Override
-					public void afterTextChanged(Editable s) {
-					}
-				});
-				((ParagraphEditableViewHolder) holder).buttonParagraphDelete.setOnClickListener((View v) -> {
-					conceptEditable.getParagraphs().remove(paragraphEditable);
-					notifyDataSetChanged();
-				});
-			}
-		} else if (holder instanceof AddButtonViewHolder) {
-			((AddButtonViewHolder) holder).buttonAddParagraph.setOnClickListener((View v) -> {
+		} else if (holder instanceof ParagraphEditableViewHolder paragraphEditableViewHolder) {
+			bindParagraphEditableViewHolder(position, paragraphEditableViewHolder);
+		} else if (holder instanceof AddButtonViewHolder addButtonViewHolder) {
+			addButtonViewHolder.buttonAddParagraph.setOnClickListener((View v) -> {
 				conceptEditable.getParagraphs().add(new Paragraph());
 				notifyDataSetChanged();
 			});
 		}
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	private void bindParagraphEditableViewHolder(int position, ParagraphEditableViewHolder paragraphEditableViewHolder) {
+		var paragraphEditable = conceptEditable.getParagraphs().get(position - 1);
+		if (paragraphEditable != null) {
+			paragraphEditableViewHolder.editTextParagraphName.setText(paragraphEditable.getHeader());
+			paragraphEditableViewHolder.editTextParagraphContent.setText(paragraphEditable.getDescription());
+			paragraphEditableViewHolder.editTextParagraphName.addTextChangedListener(
+					TextChangedHandler.prepareTextWatcher(s -> {
+						if (s.length() != 0) {
+							paragraphEditable.setHeader(s);
+						}
+					})
+			);
+			paragraphEditableViewHolder.editTextParagraphContent.addTextChangedListener(
+					TextChangedHandler.prepareTextWatcher(s -> {
+						if (s.length() != 0) {
+							paragraphEditable.setDescription(s);
+						}
+					})
+			);
+			paragraphEditableViewHolder.buttonParagraphDelete.setOnClickListener((View v) -> {
+				conceptEditable.getParagraphs().remove(paragraphEditable);
+				notifyDataSetChanged();
+			});
+		}
+	}
+
+	private void bindConceptEditableViewHolder(ConceptEditableViewHolder holder, ConceptEditableViewHolder conceptEditableViewHolder) {
+		conceptEditableViewHolder.editTextConceptName.setText(conceptEditable.getKeyPhrase());
+		conceptEditableViewHolder.editTextConceptContent.setText(conceptEditable.getSummary());
+		conceptEditableViewHolder.buttonConceptClose.setOnClickListener((View v) -> {
+			conceptEditable = copyConcept(concept);
+			changeDisplayMode();
+		});
+		conceptEditableViewHolder.buttonConceptAccept.setOnClickListener((View v) -> {
+			conceptEditable.setKeyPhrase(holder.editTextConceptName.getText().toString());
+			conceptEditable.setSummary(holder.editTextConceptContent.getText().toString());
+
+			concept = copyConcept(conceptEditable);
+			pushConcept();
+			changeDisplayMode();
+		});
+	}
+
+	private void bindParagraphViewHolder(int position, ParagraphViewHolder paragraphViewHolder) {
+		var paragraph = concept.getParagraphs().get(position - 1);
+		if (paragraph != null) {
+			paragraphViewHolder.textParagraphName.setText(paragraph.getHeader());
+			paragraphViewHolder.textParagraphContent.setText(paragraph.getDescription());
+		}
+	}
+
+	private void bindConceptViewHolder(ConceptViewHolder conceptViewHolder) {
+		conceptViewHolder.textConceptName.setText(concept.getKeyPhrase());
+		conceptViewHolder.textConceptContent.setText(concept.getSummary());
+		conceptViewHolder.buttonEditConcept.setOnClickListener((View v) -> {
+			conceptEditable = copyConcept(concept);
+			changeDisplayMode();
+		});
 	}
 
 	@Override
@@ -172,21 +146,23 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 	public int getItemViewType(int position) {
 		if (editable) {
 			if (position == 0) {
-				return CONCEPT_EDITABLE;
+				return ElementType.CONCEPT_EDITABLE.getValue();
 			} else if (position == getItemCount() - 1) {
-				return ADD_BUTTON;
+				return ElementType.ADD_BUTTON.getValue();
 			}
-			return PARAGRAPH_EDITABLE;
+			return ElementType.PARAGRAPH_EDITABLE.getValue();
 		} else {
 			if (position == 0) {
-				return CONCEPT;
+				return ElementType.CONCEPT.getValue();
 			}
-			return PARAGRAPH;
+			return ElementType.PARAGRAPH.getValue();
 		}
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void setConcept(Concept concept) {
 		this.concept = concept;
+		notifyDataSetChanged();
 	}
 
 	public static class ConceptViewHolder extends RecyclerView.ViewHolder {
@@ -249,7 +225,7 @@ public class ConceptRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 	public static class AddButtonViewHolder extends RecyclerView.ViewHolder {
 		public final Button buttonAddParagraph;
-		
+
 		public AddButtonViewHolder(@NonNull View itemView) {
 			super(itemView);
 

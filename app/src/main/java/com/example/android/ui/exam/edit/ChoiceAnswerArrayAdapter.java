@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.android.data.model.PossibleAnswer;
 import com.example.android.databinding.ViewCheckboxAnswerBinding;
+import com.example.android.util.TextChangedHandler;
 import java.util.List;
 
 public class ChoiceAnswerArrayAdapter extends ArrayAdapter<PossibleAnswer> {
