@@ -108,12 +108,14 @@ public class SectionActivity extends AppCompatActivity {
 		testButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
 			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
+			intent.putExtra(ARG_SECTION_ID, sectionId);
 			startActivity(intent);
 		});
 
 		studyButton.setOnClickListener(v -> {
 			var intent = new Intent(this, ExamActivity.class);
 			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
+			intent.putExtra(ARG_SECTION_ID, sectionId);
 			startActivity(intent);
 		});
 

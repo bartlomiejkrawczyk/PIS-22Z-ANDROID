@@ -3,6 +3,7 @@ package com.example.android.web;
 import com.example.model.Concept;
 import com.example.model.Definition;
 import com.example.model.Section;
+import com.example.model.exam.Exercise;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -39,4 +40,7 @@ public interface ApiClient {
 
 	@GET("section/id/{sectionId}")
 	Call<Section> getSectionById(@Path(value = "sectionId") int sectionId);
+
+	@GET("exercise/{sectionId}")
+	Call<List<Exercise>> getExercisesBySectionId(@Path(value = "sectionId") int sectionId);
 }

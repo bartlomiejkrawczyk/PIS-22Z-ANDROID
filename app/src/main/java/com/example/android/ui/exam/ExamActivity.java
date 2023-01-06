@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.android.databinding.ActivityExamBinding;
+import com.example.android.ui.section.SectionActivity;
 import com.example.model.exam.Exercise;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +21,9 @@ public class ExamActivity extends AppCompatActivity {
 
 	public static final String ARG_MODE = "mode";
 	private static final int EXAM_TIME = 60_000;
+
+	private int sectionId;
+	private State mode;
 
 	private ProgressBar timeProgressBar;
 	private TextView time;
@@ -47,10 +51,16 @@ public class ExamActivity extends AppCompatActivity {
 		this.nextTextView = binding.examNextTextView;
 		this.viewPager = binding.examViewPager;
 
+		setStateBasedOnIntent();
 		setupViewPager();
 		registerViewModel();
 		setTimer();
-		setStateBasedOnIntent();
+	}
+
+	private void setStateBasedOnIntent() {
+		var intent = getIntent();
+		mode = intent.getIntExtra(ARG_MODE, 0) == State.EXAM.getValue() ? State.EXAM : State.STUDY;
+		sectionId = intent.getIntExtra(SectionActivity.ARG_SECTION_ID, 0);
 	}
 
 	private void setupViewPager() {
@@ -70,7 +80,8 @@ public class ExamActivity extends AppCompatActivity {
 		viewModel.getExercisesLiveData().observe(this, this::setExercises);
 		viewModel.getCurrentExerciseNumberLiveData().observe(this, this::setCurrentQuestion);
 
-		viewModel.populateExercises(0);
+		viewModel.populateExercises(sectionId);
+		viewModel.setState(mode);
 
 		backTextView.setOnClickListener(v -> viewModel.previousExercise());
 		nextTextView.setOnClickListener(v -> viewModel.nextExercise());
@@ -113,11 +124,5 @@ public class ExamActivity extends AppCompatActivity {
 			}
 		};
 		timer.start();
-	}
-
-	private void setStateBasedOnIntent() {
-		var intent = getIntent();
-		var mode = intent.getIntExtra(ARG_MODE, 0);
-		viewModel.setState(mode == State.EXAM.getValue() ? State.EXAM : State.STUDY);
 	}
 }
