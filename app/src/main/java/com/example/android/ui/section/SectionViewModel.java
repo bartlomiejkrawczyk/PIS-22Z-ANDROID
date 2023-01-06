@@ -1,45 +1,45 @@
 package com.example.android.ui.section;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.android.web.ApiClient;
 import com.example.model.Section;
-import java.util.List;
+import java.util.Optional;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SectionViewModel extends ViewModel {
 
 	private final MutableLiveData<Section> sectionLiveData = new MutableLiveData<>();
 
-	public SectionViewModel() {
-		populateSection();
-	}
-
 	public LiveData<Section> getSectionLiveData() {
 		return sectionLiveData;
 	}
 
-	private void populateSection() {
-		var section0 = Section.builder()
-				.id(1)
-				.name("Usługi sieciowe")
-				.build();
+	public void populateSection(int sectionId) {
+		var apiClient = ApiClient.getInstance();
+		var call = apiClient.getSectionById(sectionId);
+		call.enqueue(new Callback<>() {
+			@Override
+			public void onResponse(@NonNull Call<Section> call, @NonNull Response<Section> response) {
+				var result = Optional.ofNullable(response.body()).orElseGet(SectionViewModel::getFallbackSection);
+				sectionLiveData.setValue(result);
+			}
 
-		var section1 = Section.builder()
-				.id(1)
-				.name("Serwery DNS")
-				.build();
+			@Override
+			public void onFailure(@NonNull Call<Section> call, @NonNull Throwable t) {
+				sectionLiveData.setValue(getFallbackSection());
+			}
+		});
+	}
 
-		var section2 = Section.builder()
-				.id(1)
-				.name("Protokoły TCP i UDP")
-				.build();
-
-		var section3 = Section.builder()
+	private static Section getFallbackSection() {
+		return Section.builder()
 				.id(1)
 				.name("Sieci Komputerowe")
-				.subSections(List.of(section0, section1, section2))
 				.build();
-
-		sectionLiveData.setValue(section3);
 	}
 }

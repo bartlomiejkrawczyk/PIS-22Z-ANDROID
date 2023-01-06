@@ -2,11 +2,8 @@ package com.example.android.ui.section;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +13,7 @@ import com.example.android.ui.ConceptActivity;
 import com.example.android.ui.exam.ExamActivity;
 import com.example.android.ui.exam.State;
 import com.example.android.ui.section.edit.EditSectionActivity;
+import com.example.android.util.UiUtility;
 import com.example.model.Concept;
 import com.example.model.Section;
 import java.util.List;
@@ -43,7 +41,7 @@ public class SectionActivity extends AppCompatActivity {
 		setContentView(binding.getRoot());
 
 		var previousIntent = getIntent();
-		sectionId = previousIntent.getIntExtra(ARG_SECTION_ID, 0);
+		this.sectionId = previousIntent.getIntExtra(ARG_SECTION_ID, 0);
 
 		this.conceptTextView = binding.sectionTextView;
 		this.conceptListView = binding.conceptsView.conceptsListView;
@@ -52,38 +50,22 @@ public class SectionActivity extends AppCompatActivity {
 		this.studyButton = binding.sectionExamButton;
 		this.editButton = binding.buttonEdit;
 
-		new ViewModelProvider(this)
-				.get(SectionViewModel.class)
-				.getSectionLiveData()
-				.observe(this, this::setSection);
+		setupViewModels();
+		setupOnClickListeners();
+	}
 
-		new ViewModelProvider(this)
-				.get(ConceptsViewModel.class)
-				.getConceptsLiveData()
-				.observe(this, this::setConcepts);
+	private void setupViewModels() {
+		var sectionViewModel = new ViewModelProvider(this).get(SectionViewModel.class);
+		sectionViewModel.getSectionLiveData().observe(this, this::setSection);
+		sectionViewModel.populateSection(sectionId);
 
-		new ViewModelProvider(this)
-				.get(SubSectionsViewModel.class)
-				.getSubSectionsLiveData()
-				.observe(this, this::setSubSections);
+		var conceptsViewModel = new ViewModelProvider(this).get(ConceptsViewModel.class);
+		conceptsViewModel.getConceptsLiveData().observe(this, this::setConcepts);
+		conceptsViewModel.populateConcepts(sectionId);
 
-		testButton.setOnClickListener(v -> {
-			var intent = new Intent(this, ExamActivity.class);
-			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
-			startActivity(intent);
-		});
-
-		studyButton.setOnClickListener(v -> {
-			var intent = new Intent(this, ExamActivity.class);
-			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
-			startActivity(intent);
-		});
-
-		editButton.setOnClickListener(v -> {
-			var intent = new Intent(this, EditSectionActivity.class);
-			intent.putExtra(ARG_SECTION_ID, sectionId);
-			startActivity(intent);
-		});
+		var subSectionsViewModel = new ViewModelProvider(this).get(SubSectionsViewModel.class);
+		subSectionsViewModel.getSubSectionsLiveData().observe(this, this::setSubSections);
+		subSectionsViewModel.populateSubSections(sectionId);
 	}
 
 	private void setSection(Section section) {
@@ -97,7 +79,7 @@ public class SectionActivity extends AppCompatActivity {
 				concepts.stream().map(Concept::getKeyPhrase).collect(Collectors.toList())
 		);
 		conceptListView.setAdapter(arrayAdapter);
-		setListViewHeightBasedOnChildren(conceptListView);
+		UiUtility.setListViewHeightBasedOnChildren(conceptListView);
 		conceptListView.setOnItemClickListener((parent, view, position, id) -> {
 			var intent = new Intent(this, ConceptActivity.class);
 			startActivity(intent);
@@ -115,27 +97,27 @@ public class SectionActivity extends AppCompatActivity {
 			var intent = new Intent(this, SectionActivity.class);
 			startActivity(intent);
 		});
-		setListViewHeightBasedOnChildren(subSectionsListView);
+		UiUtility.setListViewHeightBasedOnChildren(subSectionsListView);
 	}
 
+	private void setupOnClickListeners() {
+		testButton.setOnClickListener(v -> {
+			var intent = new Intent(this, ExamActivity.class);
+			intent.putExtra(ExamActivity.ARG_MODE, State.EXAM.getValue());
+			startActivity(intent);
+		});
 
-	public static void setListViewHeightBasedOnChildren(ListView listView) {
-		ListAdapter listAdapter = listView.getAdapter();
-		if (listAdapter == null) {
-			return;
-		}
+		studyButton.setOnClickListener(v -> {
+			var intent = new Intent(this, ExamActivity.class);
+			intent.putExtra(ExamActivity.ARG_MODE, State.STUDY.getValue());
+			startActivity(intent);
+		});
 
-		int totalHeight = 0;
-		for (int i = 0; i < listAdapter.getCount(); i++) {
-			View listItem = listAdapter.getView(i, null, listView);
-			listItem.measure(0, 0);
-			totalHeight += listItem.getMeasuredHeight();
-		}
-
-		ViewGroup.LayoutParams params = listView.getLayoutParams();
-		params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-		listView.setLayoutParams(params);
-		listView.requestLayout();
+		editButton.setOnClickListener(v -> {
+			var intent = new Intent(this, EditSectionActivity.class);
+			intent.putExtra(ARG_SECTION_ID, sectionId);
+			startActivity(intent);
+		});
 	}
 
 	@Override

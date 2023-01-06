@@ -40,9 +40,9 @@ public class ApiClientBuilder {
 		// TODO: Increase timeout to 30s
 		return new OkHttpClient.Builder()
 				.addInterceptor(loggingInterceptor)
-				.writeTimeout(3, TimeUnit.SECONDS)
-				.readTimeout(3, TimeUnit.SECONDS)
-				.connectTimeout(3, TimeUnit.SECONDS)
+				.writeTimeout(1, TimeUnit.SECONDS)
+				.readTimeout(1, TimeUnit.SECONDS)
+				.connectTimeout(1, TimeUnit.SECONDS)
 				.build();
 	}
 

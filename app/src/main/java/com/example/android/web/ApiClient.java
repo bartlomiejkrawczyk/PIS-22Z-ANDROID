@@ -28,6 +28,15 @@ public interface ApiClient {
 	@POST("concept/{sectionId}")
 	Call<Concept> saveConcept(@Path(value = "sectionId") int sectionId, @Body Concept concept);
 
+	@GET("concept/section/{sectionId}")
+	Call<List<Concept>> getConceptsBySectionId(@Path(value = "sectionId") int sectionId);
+
+	@GET("section/parent/{sectionId}")
+	Call<List<Section>> getSectionsByParentId(@Path(value = "sectionId") int sectionId);
+
 	@GET("section/")
 	Call<List<Section>> getRootSections();
+
+	@GET("section/id/{sectionId}")
+	Call<Section> getSectionById(@Path(value = "sectionId") int sectionId);
 }
