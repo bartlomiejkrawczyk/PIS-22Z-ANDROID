@@ -78,4 +78,8 @@
 	<string name="hint_username">Username</string>
 	<string name="button_register">Register</string>
 	<string name="hint_repeat_password">Repeat Password</string>
+	<string name="hint_section">Section</string>
+	<string name="button_add_concept">Add Concept</string>
+	<string name="button_add_sub_section">Add Sub-Section</string>
+	<string name="button_add_exercise">Add Exercise</string>
 </resources>

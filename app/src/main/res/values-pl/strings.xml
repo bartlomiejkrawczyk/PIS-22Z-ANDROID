@@ -66,4 +66,8 @@
 	<string name="hint_username">Login</string>
 	<string name="button_register">Zarejestruj się</string>
 	<string name="hint_repeat_password">Powtórz hasło</string>
+	<string name="hint_section">Sekcja</string>
+	<string name="button_add_concept">Dodaj Koncept</string>
+	<string name="button_add_sub_section">Dodaj Pod-Sekcję</string>
+	<string name="button_add_exercise">Dodaj Zadanie</string>
 </resources>
