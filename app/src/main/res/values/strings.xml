@@ -74,6 +74,10 @@
 	<string name="flash_card">Flash card</string>
 	<string name="truth_or_false">Truth or False</string>
 	<string name="multiple_truth_or_false">Multiple Truth or False</string>
+	<string name="text_register">Register</string>
+	<string name="hint_username">Username</string>
+	<string name="button_register">Register</string>
+	<string name="hint_repeat_password">Repeat Password</string>
 	<string name="hint_section">Section</string>
 	<string name="button_add_concept">Add Concept</string>
 	<string name="button_add_sub_section">Add Sub-Section</string>
