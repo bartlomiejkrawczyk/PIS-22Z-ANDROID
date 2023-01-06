@@ -47,4 +47,19 @@
 	<string name="text_exam_mode">Tryb Testowy</string>
 	<string name="text_study_mode">Tryb Nauki</string>
 	<string name="summary_task">Zadanie {0}.</string>
+	<string name="hint_question">Pytanie</string>
+	<string name="hint_answer">Odpowiedź</string>
+	<string name="button_add">Dodaj</string>
+	<string name="hint_correct_answer">Poprawna odpowiedź</string>
+	<string name="hint_start_paragraph">Zacznij paragraf</string>
+	<string name="hint_possible_answers">Możliwe odpowiedzi po przecinku</string>
+	<string name="hint_continue_paragraph">Zakończ paragraf</string>
+	<string name="button_done">Zakończ</string>
+	<string name="fill_blanks">Wypełnij luki</string>
+	<string name="select_from_list">Wybierz z listy</string>
+	<string name="single_choice">Jednokrotny wybór</string>
+	<string name="multiple_choice">Wielokrotny wybór</string>
+	<string name="flash_card">Fiszka</string>
+	<string name="truth_or_false">Prawda lub Fałsz</string>
+	<string name="multiple_truth_or_false">Wielokrotna Prawda lub Fałsz</string>
 </resources>
