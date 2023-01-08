@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.android.util.ExerciseMapperProvider;
 import com.example.android.web.ApiClient;
 import com.example.model.exam.Choice;
 import com.example.model.exam.Exercise;
+import com.example.model.exam.ExerciseDto;
 import com.example.model.exam.FillBlanks;
 import com.example.model.exam.FlashCard;
 import com.example.model.exam.MultipleChoice;
@@ -18,6 +20,7 @@ import com.example.model.exam.answer.ChoiceAnswer;
 import com.example.model.exam.answer.ListAnswer;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,13 +95,21 @@ public class ExercisesViewModel extends ViewModel {
 		var call = apiClient.getExercisesBySectionId(sectionId);
 		call.enqueue(new Callback<>() {
 			@Override
-			public void onResponse(@NonNull Call<List<Exercise>> call, @NonNull Response<List<Exercise>> response) {
-				Optional.ofNullable(response.body()).orElseGet(ExercisesViewModel::getFallbackExercises);
+			public void onResponse(@NonNull Call<List<ExerciseDto>> call, @NonNull Response<List<ExerciseDto>> response) {
+				if (response.body() == null) {
+					exercisesLiveData.setValue(getFallbackExercises());
+				} else {
+					var result = response.body().stream()
+							.map(ExerciseMapperProvider.EXERCISE_MAPPER::dtoToExercise)
+							.collect(Collectors.toList());
+					exercisesLiveData.setValue(result);
+				}
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Exercise>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<ExerciseDto>> call, @NonNull Throwable t) {
 				exercisesLiveData.setValue(getFallbackExercises());
+
 			}
 		});
 	}
