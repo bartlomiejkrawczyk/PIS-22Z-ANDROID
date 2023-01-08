@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.android.web.ApiClient;
-import com.example.model.Concept;
+import com.example.model.Definition;
 import java.util.List;
 import java.util.Optional;
 import retrofit2.Call;
@@ -14,9 +14,9 @@ import retrofit2.Response;
 
 public class ConceptsViewModel extends ViewModel {
 
-	private final MutableLiveData<List<Concept>> conceptsLiveData = new MutableLiveData<>();
+	private final MutableLiveData<List<Definition>> conceptsLiveData = new MutableLiveData<>();
 
-	public LiveData<List<Concept>> getConceptsLiveData() {
+	public LiveData<List<Definition>> getConceptsLiveData() {
 		return conceptsLiveData;
 	}
 
@@ -25,30 +25,30 @@ public class ConceptsViewModel extends ViewModel {
 		var call = apiClient.getConceptsBySectionId(sectionId);
 		call.enqueue(new Callback<>() {
 			@Override
-			public void onResponse(@NonNull Call<List<Concept>> call, @NonNull Response<List<Concept>> response) {
+			public void onResponse(@NonNull Call<List<Definition>> call, @NonNull Response<List<Definition>> response) {
 				var result = Optional.ofNullable(response.body()).orElseGet(ConceptsViewModel::getFallbackConcepts);
 				conceptsLiveData.setValue(result);
 			}
 
 			@Override
-			public void onFailure(@NonNull Call<List<Concept>> call, @NonNull Throwable t) {
+			public void onFailure(@NonNull Call<List<Definition>> call, @NonNull Throwable t) {
 				conceptsLiveData.setValue(getFallbackConcepts());
 			}
 		});
 	}
 
-	private static List<Concept> getFallbackConcepts() {
-		var concept1 = Concept.builder()
-				.keyPhrase("Sieć")
+	private static List<Definition> getFallbackConcepts() {
+		var concept1 = Definition.builder()
+				.concept("Sieć")
 				.build();
-		var concept2 = Concept.builder()
-				.keyPhrase("Intersieć")
+		var concept2 = Definition.builder()
+				.concept("Intersieć")
 				.build();
-		var concept3 = Concept.builder()
-				.keyPhrase("Internet")
+		var concept3 = Definition.builder()
+				.concept("Internet")
 				.build();
-		var concept4 = Concept.builder()
-				.keyPhrase("Stos ISO/OSI")
+		var concept4 = Definition.builder()
+				.concept("Stos ISO/OSI")
 				.build();
 		return List.of(concept1, concept2, concept3, concept4);
 	}

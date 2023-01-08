@@ -31,7 +31,7 @@ public interface ApiClient {
 	Call<Concept> saveConcept(@Path(value = "sectionId") int sectionId, @Body Concept concept);
 
 	@GET("concept/section/{sectionId}")
-	Call<List<Concept>> getConceptsBySectionId(@Path(value = "sectionId") int sectionId);
+	Call<List<Definition>> getConceptsBySectionId(@Path(value = "sectionId") int sectionId);
 
 	@GET("section/parent/{sectionId}")
 	Call<List<Section>> getSectionsByParentId(@Path(value = "sectionId") int sectionId);
