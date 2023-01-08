@@ -14,7 +14,7 @@ import com.example.android.ui.exam.ExamActivity;
 import com.example.android.ui.exam.State;
 import com.example.android.ui.section.edit.EditSectionActivity;
 import com.example.android.util.UiUtility;
-import com.example.model.Concept;
+import com.example.model.Definition;
 import com.example.model.Section;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,11 +72,11 @@ public class SectionActivity extends AppCompatActivity {
 		conceptTextView.setText(section.getName());
 	}
 
-	private void setConcepts(List<Concept> concepts) {
+	private void setConcepts(List<Definition> concepts) {
 		var arrayAdapter = new ArrayAdapter<>(
 				this,
 				android.R.layout.simple_list_item_1,
-				concepts.stream().map(Concept::getKeyPhrase).collect(Collectors.toList())
+				concepts.stream().map(Definition::getConcept).collect(Collectors.toList())
 		);
 		conceptListView.setAdapter(arrayAdapter);
 		UiUtility.setListViewHeightBasedOnChildren(conceptListView);

@@ -3,7 +3,7 @@ package com.example.android.web;
 import com.example.model.Concept;
 import com.example.model.Definition;
 import com.example.model.Section;
-import com.example.model.exam.Exercise;
+import com.example.model.exam.ExerciseDto;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -31,7 +31,7 @@ public interface ApiClient {
 	Call<Concept> saveConcept(@Path(value = "sectionId") int sectionId, @Body Concept concept);
 
 	@GET("concept/section/{sectionId}")
-	Call<List<Concept>> getConceptsBySectionId(@Path(value = "sectionId") int sectionId);
+	Call<List<Definition>> getConceptsBySectionId(@Path(value = "sectionId") int sectionId);
 
 	@GET("section/parent/{sectionId}")
 	Call<List<Section>> getSectionsByParentId(@Path(value = "sectionId") int sectionId);
@@ -49,8 +49,8 @@ public interface ApiClient {
 	Call<Section> getSectionById(@Path(value = "sectionId") int sectionId);
 
 	@GET("exercise/{sectionId}")
-	Call<List<Exercise>> getExercisesBySectionId(@Path(value = "sectionId") int sectionId);
+	Call<List<ExerciseDto>> getExercisesBySectionId(@Path(value = "sectionId") int sectionId);
 
 	@POST("exercise/{sectionId}")
-	Call<Exercise> saveExercise(@Path(value = "sectionId") int sectionId, @Body Exercise exercise);
+	Call<ExerciseDto> saveExercise(@Path(value = "sectionId") int sectionId, @Body ExerciseDto exercise);
 }
