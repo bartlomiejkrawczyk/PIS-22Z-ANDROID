@@ -47,6 +47,7 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 		Log.d("onBindViewHolder", "Refreshed");
 		Log.d("TEST", section.toString());
 
+		// TODO: fix the way state is stored xD
 		viewHolder.sectionLinearLayout.setOnClickListener(v -> {
 			section.setId(-section.getId());
 			notifyItemChanged(position);
@@ -57,6 +58,7 @@ public class SectionRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 		viewHolder.sectionIcon.setOnClickListener(v -> {
 			var intent = new Intent(context, SectionActivity.class);
+			intent.putExtra(SectionActivity.ARG_SECTION_ID, Math.abs(section.getId()));
 			context.startActivity(intent);
 		});
 
