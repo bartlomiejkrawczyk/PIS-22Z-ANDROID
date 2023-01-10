@@ -36,7 +36,7 @@ skorzystać z AndroidStudio gdzie projekt jest poprawnie rozpoznawany jako proje
 i budowany.
 
 **Uwaga:** Kiedy budujesz aplikacje może wystąpić problem z niespełnionymi zależnościami.
-W takim przypadku, powinieneś zbudować najpierw [model danych](https://gitlab-stud.elka.pw.edu.pl/bkrawcz1/pzsp2-22z-model) i wygenerować plik jar oraz opublikować w lokalnym repozytorium Mavena:
+W takim przypadku, powinieneś zbudować najpierw [model danych](https://github.com/bartlomiejkrawczyk/PIS-22Z-MODEL) i wygenerować plik jar oraz opublikować w lokalnym repozytorium Mavena:
 ```bash
 ./gradlew publishToMavenLocal
 ```
