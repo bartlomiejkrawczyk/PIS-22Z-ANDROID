@@ -1,5 +1,6 @@
 package com.example.android.web;
 
+import com.example.android.BuildConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +15,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 @NoArgsConstructor
 public class ApiClientBuilder {
 
-	private String target = "http://10.0.2.2:8075/api/";
+	private String target = BuildConfig.API_URL;
 
 	public ApiClientBuilder target(String target) {
 		this.target = target;

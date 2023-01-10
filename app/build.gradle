@@ -24,11 +24,13 @@ android {
 		release {
 			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+			buildConfigField 'String', 'API_URL', '"http://localhost:8075/api/"'
 		}
 		debug {
 			minifyEnabled false
 			testCoverageEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+			buildConfigField 'String', 'API_URL', '"http://localhost:8075/api/"'
 		}
 	}
 	compileOptions {
