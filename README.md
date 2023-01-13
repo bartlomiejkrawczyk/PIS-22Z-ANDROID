@@ -29,6 +29,11 @@ Wydzielimy główne komponenty:
     Warstwa domenowa - odpowiedzialna za obsługę logiki biznesowej
 
     Warstwa Danych - odpowiedzialna za przechowywanie oraz aktualizację danych
+    
+
+# Diagram klas
+
+![](./android.png)
 
 # Budowanie i uruchomienie
 Do poprawnego zbudowania i uruchomienia projektu wymagane jest Java17 i AndroidSDK dlatego najlepiej
